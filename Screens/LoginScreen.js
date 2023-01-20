@@ -21,6 +21,9 @@ export default function Login({ navigation }) {
   const passwordHandler = text => setPassword(text);
 
   const onLogin = () => {
+    if (email === '' || password === '') {
+      return Alert.alert('Заповнить поля');
+    }
     Alert.alert('Credentials', `${email} + ${password}`);
   };
 
@@ -56,12 +59,12 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    // backgroundColor: '#FFFFFF',
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    // flex: 1,
+    flex: 1,
     alignItems: 'stretch',
     borderRadius: 20,
   },

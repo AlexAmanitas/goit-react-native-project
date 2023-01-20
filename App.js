@@ -45,35 +45,27 @@ export default function App() {
     }
   }, [isReady]);
 
-  if (!isReady) {
+  if (isReady === false) {
     return null;
   }
 
   return (
     // <NavigationContainer>
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        >
-          <ImageBackground
-            source={require('./images/background_img.jpg')}
-            resizeMode="cover"
-            style={styles.image}
-          >
-            {/* <MainStack.Navigator initialRouteName="Login">
-                <MainStack.Screen
-                  name="Registration"
-                  component={Registration}
-                />
-                <MainStack.Screen name="Login" component={Login} />
-              </MainStack.Navigator> */}
-            <Registration />
-          </ImageBackground>
-        </KeyboardAvoidingView>
-      </View>
-    </TouchableWithoutFeedback>
-    // </NavigationContainer>
+
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      <ImageBackground
+        source={require('./images/background_img2.jpg')}
+        style={styles.image}
+      >
+        {/* <MainStack.Navigator initialRouteName="Login">
+            <MainStack.Screen name="Registration" component={Registration} />
+            <MainStack.Screen name="Login" component={Login} />
+          </MainStack.Navigator> */}
+        <Registration />
+      </ImageBackground>
+    </View>
+
+    // {/* </NavigationContainer> */}
   );
 }
 
@@ -81,16 +73,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // alignItems: 'stretch',
-    // justifyContent: 'center',
+    // justifyContent: 'flex-end',
   },
   image: {
-    // justifyContent: 'center',
-    // position: 'relative',
+    flex: 1,
+    // justifyContent: 'flex-end',
+    // position: 'absolute',
     // top: 0,
     // right: 0,
     // bottom: 0,
     // left: 0,
-    resizeMode: 'cover',
   },
 });
 

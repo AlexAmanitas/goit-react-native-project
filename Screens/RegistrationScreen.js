@@ -23,6 +23,9 @@ export default function Registration() {
   const passwordHandler = text => setPassword(text);
 
   const onLogin = () => {
+    if (login === '' || email === '' || password === '') {
+      return Alert.alert('Заповнить поля');
+    }
     Alert.alert('Credentials', `${login} + ${password}`);
   };
 
@@ -40,33 +43,33 @@ export default function Registration() {
             <Image style={styles.avatar} />
           </View>
 
-          <Text style={styles.title}>Registration</Text>
+          <Text style={styles.title}>Реєстрація</Text>
           <TextInput
             value={login}
             onChangeText={loginHandler}
-            placeholder="Login"
+            placeholder="Логін"
             style={styles.input}
           />
           <TextInput
             value={email}
             onChangeText={emailHandler}
-            placeholder="Email"
+            placeholder="Адреса електронної пошти"
             style={styles.input}
           />
           <TextInput
             value={password}
             onChangeText={passwordHandler}
-            placeholder="Password"
+            placeholder="Придумайте пароль"
             secureTextEntry={true}
             style={styles.input}
           />
           <Pressable onPress={onLogin} style={styles.button}>
-            <Text style={styles.text}>Registration</Text>
+            <Text style={styles.text}>Зареєструватися</Text>
           </Pressable>
           <View style={styles.subscribe}>
-            <Text style={styles.posttext}>Already have an account? </Text>
+            <Text style={styles.posttext}>Вже є акаунт? </Text>
             <Pressable onPress={onTransition}>
-              <Text style={styles.loginLink}>Login</Text>
+              <Text style={styles.loginLink}>Увійти</Text>
             </Pressable>
           </View>
         </KeyboardAvoidingView>
@@ -82,10 +85,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    marginTop: 200,
-    flex: 1,
     alignItems: 'stretch',
     borderRadius: 20,
+    marginTop: 263,
   },
 
   avatar: {

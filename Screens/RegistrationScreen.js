@@ -13,7 +13,7 @@ import {
   Image,
 } from 'react-native';
 
-export default function Registration() {
+const Registration = () => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -76,7 +76,7 @@ export default function Registration() {
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -134,3 +134,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
+
+export default Registration;

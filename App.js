@@ -17,9 +17,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 SplashScreen.preventAutoHideAsync();
-const MainStack = createStackNavigator();
+const Stack = createStackNavigator();
 
-export default function App() {
+const App = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -50,24 +50,22 @@ export default function App() {
   }
 
   return (
-    // <NavigationContainer>
-
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <ImageBackground
-        source={require('./images/background_img2.jpg')}
-        style={styles.image}
-      >
-        {/* <MainStack.Navigator initialRouteName="Login">
-            <MainStack.Screen name="Registration" component={Registration} />
-            <MainStack.Screen name="Login" component={Login} />
-          </MainStack.Navigator> */}
-        <Registration />
-      </ImageBackground>
-    </View>
-
-    // {/* </NavigationContainer> */}
+    <NavigationContainer>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <ImageBackground
+          source={require('./images/background_img2.jpg')}
+          style={styles.image}
+        >
+          <Stack.Navigator initialRouteName="Registration">
+            <Stack.Screen name="Registration" component={Registration} />
+            <Stack.Screen name="Login" component={Login} />
+          </Stack.Navigator>
+          {/* <Registration /> */}
+        </ImageBackground>
+      </View>
+    </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -87,3 +85,4 @@ const styles = StyleSheet.create({
 });
 
 // https://prnt.sc/vc5s9P2hGpen   debugger screenshot
+export default App;

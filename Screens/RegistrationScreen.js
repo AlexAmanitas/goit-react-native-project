@@ -13,7 +13,7 @@ import {
   Image,
 } from 'react-native';
 
-const Registration = () => {
+const Registration = ({ navigation }) => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +30,7 @@ const Registration = () => {
   };
 
   const onTransition = () => {
-    // navigation.navigate('Login');
+    navigation.navigate('Login');
   };
 
   return (
@@ -64,7 +64,7 @@ const Registration = () => {
             style={styles.input}
           />
           <Pressable onPress={onLogin} style={styles.button}>
-            <Text style={styles.text}>Зареєструватися</Text>
+            <Text style={styles.text}>Зареєструватись</Text>
           </Pressable>
           <View style={styles.subscribe}>
             <Text style={styles.posttext}>Вже є акаунт? </Text>

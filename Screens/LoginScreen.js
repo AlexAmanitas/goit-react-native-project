@@ -12,7 +12,7 @@ import {
   Text,
 } from 'react-native';
 
-export default function Login({ navigation }) {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const { userId } = route.params;
@@ -27,35 +27,45 @@ export default function Login({ navigation }) {
     Alert.alert('Credentials', `${email} + ${password}`);
   };
 
+  const onTransition = () => {
+    navigation.navigate('Registration');
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <KeyboardAvoidingView
           behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         >
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Логін</Text>
           {/* <Text>User Id {userId}</Text> */}
           <TextInput
             value={email}
             onChangeText={emailHandler}
-            placeholder="Email"
+            placeholder="Адреса електронної пошти"
             style={styles.input}
           />
           <TextInput
             value={password}
             onChangeText={passwordHandler}
-            placeholder="Password"
+            placeholder="Пароль"
             secureTextEntry={true}
             style={styles.input}
           />
           <Pressable onPress={onLogin} style={styles.button}>
-            <Text style={styles.text}>Login</Text>
+            <Text style={styles.text}>Увійти</Text>
           </Pressable>
+          <View style={styles.subscribe}>
+            <Text style={styles.posttext}>Ще нема акаунта? </Text>
+            <Pressable onPress={onTransition}>
+              <Text style={styles.loginLink}>Зареєструватись</Text>
+            </Pressable>
+          </View>
         </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -105,3 +115,5 @@ const styles = StyleSheet.create({
     // padding: 0,
   },
 });
+
+export default Login;

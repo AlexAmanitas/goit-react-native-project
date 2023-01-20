@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
   View,
-  ImageBackground,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
@@ -52,16 +51,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        <ImageBackground
-          source={require('./images/background_img2.jpg')}
-          style={styles.image}
-        >
-          <Stack.Navigator initialRouteName="Registration">
-            <Stack.Screen name="Registration" component={Registration} />
-            <Stack.Screen name="Login" component={Login} />
-          </Stack.Navigator>
-          {/* <Registration /> */}
-        </ImageBackground>
+        <Stack.Navigator initialRouteName="Registration" style={styles.navBox}>
+          <Stack.Screen name="Registration" component={Registration} />
+          <Stack.Screen name="Login" component={Login} />
+        </Stack.Navigator>
       </View>
     </NavigationContainer>
   );
@@ -73,14 +66,10 @@ const styles = StyleSheet.create({
     // alignItems: 'stretch',
     // justifyContent: 'flex-end',
   },
-  image: {
-    flex: 1,
-    // justifyContent: 'flex-end',
-    // position: 'absolute',
-    // top: 0,
-    // right: 0,
-    // bottom: 0,
-    // left: 0,
+
+  navBox: {
+    backgroundColor: 'grey',
+    borderColor: 'red',
   },
 });
 

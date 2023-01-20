@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  ImageBackground,
   Platform,
   Alert,
   Text,
@@ -35,45 +36,50 @@ const Registration = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-          <View>
-            <Image style={styles.avatar} />
-          </View>
+      <ImageBackground
+        source={require('../images/background_img2.jpg')}
+        style={styles.image}
+      >
+        <View style={styles.container}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
+            <View>
+              <Image style={styles.avatar} />
+            </View>
 
-          <Text style={styles.title}>Реєстрація</Text>
-          <TextInput
-            value={login}
-            onChangeText={loginHandler}
-            placeholder="Логін"
-            style={styles.input}
-          />
-          <TextInput
-            value={email}
-            onChangeText={emailHandler}
-            placeholder="Адреса електронної пошти"
-            style={styles.input}
-          />
-          <TextInput
-            value={password}
-            onChangeText={passwordHandler}
-            placeholder="Придумайте пароль"
-            secureTextEntry={true}
-            style={styles.input}
-          />
-          <Pressable onPress={onLogin} style={styles.button}>
-            <Text style={styles.text}>Зареєструватись</Text>
-          </Pressable>
-          <View style={styles.subscribe}>
-            <Text style={styles.posttext}>Вже є акаунт? </Text>
-            <Pressable onPress={onTransition}>
-              <Text style={styles.loginLink}>Увійти</Text>
+            <Text style={styles.title}>Реєстрація</Text>
+            <TextInput
+              value={login}
+              onChangeText={loginHandler}
+              placeholder="Логін"
+              style={styles.input}
+            />
+            <TextInput
+              value={email}
+              onChangeText={emailHandler}
+              placeholder="Адреса електронної пошти"
+              style={styles.input}
+            />
+            <TextInput
+              value={password}
+              onChangeText={passwordHandler}
+              placeholder="Придумайте пароль"
+              secureTextEntry={true}
+              style={styles.input}
+            />
+            <Pressable onPress={onLogin} style={styles.button}>
+              <Text style={styles.text}>Зареєструватись</Text>
             </Pressable>
-          </View>
-        </KeyboardAvoidingView>
-      </View>
+            <View style={styles.subscribe}>
+              <Text style={styles.posttext}>Вже є акаунт? </Text>
+              <Pressable onPress={onTransition}>
+                <Text style={styles.loginLink}>Увійти</Text>
+              </Pressable>
+            </View>
+          </KeyboardAvoidingView>
+        </View>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
@@ -87,7 +93,17 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'stretch',
     borderRadius: 20,
-    marginTop: 263,
+    // marginTop: 263,
+  },
+
+  image: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    // position: 'absolute',
+    // top: 0,
+    // right: 0,
+    // bottom: 0,
+    // left: 0,
   },
 
   avatar: {

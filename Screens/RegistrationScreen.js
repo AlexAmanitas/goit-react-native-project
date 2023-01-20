@@ -8,7 +8,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  Button,
+  Text,
+  Pressable,
+  Image,
 } from 'react-native';
 
 export default function Registration() {
@@ -24,12 +26,21 @@ export default function Registration() {
     Alert.alert('Credentials', `${login} + ${password}`);
   };
 
+  const onTransition = () => {
+    // navigation.navigate('Login');
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <KeyboardAvoidingView
-          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
+          <View>
+            <Image style={styles.avatar} />
+          </View>
+
+          <Text style={styles.title}>Registration</Text>
           <TextInput
             value={login}
             onChangeText={loginHandler}
@@ -49,7 +60,15 @@ export default function Registration() {
             secureTextEntry={true}
             style={styles.input}
           />
-          <Button title={'Login'} style={styles.input} onPress={onLogin} />
+          <Pressable onPress={onLogin} style={styles.button}>
+            <Text style={styles.text}>Registration</Text>
+          </Pressable>
+          <View style={styles.subscribe}>
+            <Text style={styles.posttext}>Already have an account? </Text>
+            <Pressable onPress={onTransition}>
+              <Text style={styles.loginLink}>Login</Text>
+            </Pressable>
+          </View>
         </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
@@ -58,18 +77,58 @@ export default function Registration() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 600,
+    backgroundColor: '#FFFFFF',
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    marginTop: 200,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    alignItems: 'stretch',
+    borderRadius: 20,
+  },
+
+  avatar: {
+    position: 'absolute',
+    top: -70,
+    width: 120,
+    height: 120,
+    backgroundColor: '#999999',
+    borderRadius: 7,
+    alignSelf: 'center',
+  },
+
+  title: {
+    marginTop: 92,
+    marginBottom: 32,
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   input: {
-    width: 200,
     height: 44,
     padding: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    marginBottom: 10,
+    backgroundColor: '#E8E8E8',
+    marginTop: 16,
+    borderRadius: 10,
+  },
+  button: {
+    backgroundColor: '#FF6C00',
+    borderRadius: 32,
+    padding: 16,
+    marginVertical: 16,
+    marginTop: 43,
+    justifyContent: 'center',
+  },
+
+  text: {
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'center',
+  },
+
+  subscribe: {
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
 });

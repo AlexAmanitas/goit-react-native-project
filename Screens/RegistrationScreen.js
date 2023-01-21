@@ -85,17 +85,6 @@ const Registration = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-    fontFamily: 'Roboto-Regular',
-    fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    alignItems: 'stretch',
-    borderRadius: 20,
-    // marginTop: 263,
-  },
-
   image: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -104,6 +93,17 @@ const styles = StyleSheet.create({
     // right: 0,
     // bottom: 0,
     // left: 0,
+  },
+  container: {
+    // backgroundColor: '#FFFFFF',
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    alignItems: 'stretch',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    // marginTop: 263,
   },
 
   avatar: {

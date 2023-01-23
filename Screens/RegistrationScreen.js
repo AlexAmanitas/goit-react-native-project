@@ -13,6 +13,7 @@ import {
   Pressable,
   Image,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const Registration = ({ navigation }) => {
   const [login, setLogin] = useState('');
@@ -22,16 +23,23 @@ const Registration = ({ navigation }) => {
   const loginHandler = text => setLogin(text);
   const emailHandler = text => setEmail(text);
   const passwordHandler = text => setPassword(text);
+  const credentials = {};
 
   const onLogin = () => {
     if (login === '' || email === '' || password === '') {
       return Alert.alert('Заповнить поля');
+    } else {
+      credentials = { login, email, password };
+      console.log(credentials);
     }
-    Alert.alert('Credentials', `${login} + ${password}`);
   };
 
   const onTransition = () => {
     navigation.navigate('Login');
+  };
+
+  const addPhoto = () => {
+    console.log('Add photo');
   };
 
   return (
@@ -44,8 +52,16 @@ const Registration = ({ navigation }) => {
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           >
-            <View>
-              <Image style={styles.avatar} />
+            <View style={styles.avatar}>
+              <Image />
+              <Pressable onPress={addPhoto}>
+                <Ionicons
+                  name="add-circle-outline"
+                  size={30}
+                  color="#FF6C00"
+                  style={styles.icon}
+                />
+              </Pressable>
             </View>
 
             <Text style={styles.title}>Реєстрація</Text>
@@ -88,37 +104,37 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: 'flex-end',
-    // position: 'absolute',
-    // top: 0,
-    // right: 0,
-    // bottom: 0,
-    // left: 0,
   },
+
   container: {
-    // backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFFFF',
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    padding: 16,
+    paddingBottom: 45,
     alignItems: 'stretch',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    // marginTop: 263,
   },
 
   avatar: {
     position: 'absolute',
-    top: -70,
+    top: -76,
     width: 120,
     height: 120,
-    backgroundColor: '#999999',
-    borderRadius: 7,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 15,
     alignSelf: 'center',
+  },
+
+  icon: {
+    top: 70,
+    left: 105,
   },
 
   title: {
     marginTop: 92,
-    marginBottom: 32,
+    marginBottom: 16,
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',

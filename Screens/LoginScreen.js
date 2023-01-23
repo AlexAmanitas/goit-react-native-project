@@ -90,14 +90,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 16,
     paddingVertical: 16,
+    paddingBottom: 45,
     alignItems: 'stretch',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
 
   title: {
-    marginTop: 92,
-    marginBottom: 32,
+    marginTop: 32,
+    marginBottom: 16,
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',

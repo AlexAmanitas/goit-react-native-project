@@ -9,11 +9,14 @@ import {
 } from 'react-native';
 import Login from './Screens/LoginScreen';
 import Registration from './Screens/RegistrationScreen';
+import Home from './Screens/Home';
+
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { MaterialIcons } from '@expo/vector-icons';
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
@@ -51,8 +54,22 @@ const App = () => {
   return (
     <NavigationContainer>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        <Stack.Navigator initialRouteName="Registration" style={styles.navBox}>
-          <Stack.Screen name="Registration" component={Registration} />
+        <Stack.Navigator initialRouteName="Реєстрація" style={styles.navBox}>
+          <Stack.Screen
+            style={{ backgroundColor: '#fff' }}
+            name="Home"
+            component={Home}
+            options={{
+              title: 'Публікації',
+              headerTitleStyle: {
+                justifyContent: 'center',
+              },
+              headerRight: () => (
+                <MaterialIcons name="logout" size={24} color="black" />
+              ),
+            }}
+          />
+          <Stack.Screen name="Реєстрація" component={Registration} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       </View>
@@ -62,13 +79,17 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 16,
+    // backgroundColor: 'grey',
+
     flex: 1,
     // alignItems: 'stretch',
     // justifyContent: 'flex-end',
   },
 
   navBox: {
-    backgroundColor: 'grey',
+    padding: 16,
+
     borderColor: 'red',
   },
 });

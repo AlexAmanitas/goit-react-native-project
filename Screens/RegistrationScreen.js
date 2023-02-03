@@ -23,19 +23,19 @@ const Registration = ({ navigation }) => {
   const loginHandler = text => setLogin(text);
   const emailHandler = text => setEmail(text);
   const passwordHandler = text => setPassword(text);
-  const credentials = {};
 
-  const onLogin = () => {
+  const onSubmit = () => {
     if (login === '' || email === '' || password === '') {
       return Alert.alert('Заповнить поля');
     } else {
-      credentials = { login, email, password };
-      console.log(credentials);
+      // credentials = { login, email, password };
+      console.log(login, email, password);
     }
+    navigation.navigate('Home');
   };
 
   const onTransition = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Home');
   };
 
   const addPhoto = () => {
@@ -84,7 +84,7 @@ const Registration = ({ navigation }) => {
               secureTextEntry={true}
               style={styles.input}
             />
-            <Pressable onPress={onLogin} style={styles.button}>
+            <Pressable onPress={onSubmit} style={styles.button}>
               <Text style={styles.text}>Зареєструватись</Text>
             </Pressable>
             <View style={styles.subscribe}>

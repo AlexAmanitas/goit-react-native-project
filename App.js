@@ -1,12 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Keyboard,
-  Platform,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Login from './Screens/LoginScreen';
 import Registration from './Screens/RegistrationScreen';
 import Home from './Screens/Home';
@@ -61,12 +53,10 @@ const App = () => {
             component={Home}
             options={{
               title: 'Публікації',
+              headerShown: false,
               headerTitleStyle: {
                 justifyContent: 'center',
               },
-              headerRight: () => (
-                <MaterialIcons name="logout" size={24} color="black" />
-              ),
             }}
           />
           <Stack.Screen name="Реєстрація" component={Registration} />

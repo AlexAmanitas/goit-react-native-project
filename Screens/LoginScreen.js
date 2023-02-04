@@ -35,7 +35,7 @@ const Login = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ImageBackground
-        source={require('../images/background_img2.jpg')}
+        source={require('../assets/images/background_img2.jpg')}
         style={styles.image}
       >
         <View style={styles.container}>

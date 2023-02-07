@@ -3,12 +3,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
 import CreatePostsScreen from './CreatePostsScreen';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Pressable } from 'react-native';
+import { useUser } from '../userContext';
 
 const Tabs = createBottomTabNavigator();
 
 const Home = () => {
+  const { logOut } = useUser();
+
   return (
     <Tabs.Navigator>
       <Tabs.Screen
@@ -24,7 +27,9 @@ const Home = () => {
             />
           ),
           headerRight: () => (
-            <MaterialCommunityIcons name="logout" size={24} color="black" />
+            <Pressable onPress={logOut}>
+              <MaterialCommunityIcons name="logout" size={24} color="black" />
+            </Pressable>
           ),
         }}
       />

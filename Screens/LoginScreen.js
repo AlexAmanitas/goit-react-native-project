@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -12,24 +12,23 @@ import {
   Pressable,
   Text,
 } from 'react-native';
+import { useUser } from '../userContext';
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  // const { userId } = route.params;
+  const { login, setLogin, password, setPassword, logIn } = useUser();
 
-  const emailHandler = text => setEmail(text);
+  const loginHandler = text => setLogin(text);
   const passwordHandler = text => setPassword(text);
 
   const onLogin = () => {
-    if (email === '' || password === '') {
+    if (login === '' || password === '') {
       return Alert.alert('Заповнить поля');
     }
-    Alert.alert('Credentials', `${email} + ${password}`);
+    logIn();
   };
 
   const onTransition = () => {
-    navigation.navigate('Registration');
+    navigation.navigate('Реєстрація');
   };
 
   return (
@@ -45,9 +44,9 @@ const Login = ({ navigation }) => {
             <Text style={styles.title}>Увійти</Text>
             {/* <Text>User Id {userId}</Text> */}
             <TextInput
-              value={email}
-              onChangeText={emailHandler}
-              placeholder="Адреса електронної пошти"
+              value={login}
+              onChangeText={loginHandler}
+              placeholder="Логін"
               style={styles.input}
             />
             <TextInput

@@ -1,17 +1,12 @@
-import { StyleSheet, View } from 'react-native';
-import Login from './Screens/LoginScreen';
-import Registration from './Screens/RegistrationScreen';
-import Home from './Screens/Home';
-
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet, View } from 'react-native';
+import { Route } from './router';
+import { UserProvider } from './userContext';
 
 SplashScreen.preventAutoHideAsync();
-const Stack = createStackNavigator();
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -44,29 +39,18 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <Stack.Navigator initialRouteName="Реєстрація" style={styles.navBox}>
-          <Stack.Screen
-            style={{ backgroundColor: '#fff' }}
-            name="Home"
-            component={Home}
-            options={{
-              title: 'Публікації',
-              headerShown: false,
-              headerTitleStyle: {
-                justifyContent: 'center',
-              },
-            }}
-          />
-          <Stack.Screen name="Реєстрація" component={Registration} />
-          <Stack.Screen name="Login" component={Login} />
-        </Stack.Navigator>
-      </View>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          <Route />
+        </View>
+      </NavigationContainer>
+    </UserProvider>
   );
 };
 
+// https://prnt.sc/vc5s9P2hGpen   debugger screenshot
+export default App;
 const styles = StyleSheet.create({
   container: {
     padding: 16,
@@ -83,6 +67,3 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
 });
-
-// https://prnt.sc/vc5s9P2hGpen   debugger screenshot
-export default App;

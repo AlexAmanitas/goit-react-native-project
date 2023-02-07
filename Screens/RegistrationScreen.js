@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -14,28 +14,28 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useUser } from '../userContext';
 
 const Registration = ({ navigation }) => {
-  const [login, setLogin] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { logIn, login, email, password, setLogin, setEmail, setPassword } =
+    useUser();
 
   const loginHandler = text => setLogin(text);
   const emailHandler = text => setEmail(text);
   const passwordHandler = text => setPassword(text);
 
+  // console.log(login, email, password, isAuth);
+
   const onSubmit = () => {
     if (login === '' || email === '' || password === '') {
       return Alert.alert('Заповнить поля');
     } else {
-      // credentials = { login, email, password };
-      console.log(login, email, password);
+      logIn();
     }
-    navigation.navigate('Home');
   };
 
   const onTransition = () => {
-    navigation.navigate('Home');
+    navigation.navigate('Логін');
   };
 
   const addPhoto = () => {
@@ -63,7 +63,6 @@ const Registration = ({ navigation }) => {
                 />
               </Pressable>
             </View>
-
             <Text style={styles.title}>Реєстрація</Text>
             <TextInput
               value={login}

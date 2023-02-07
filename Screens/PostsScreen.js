@@ -1,4 +1,5 @@
 import { StyleSheet, View, Image, Text } from 'react-native-web';
+import { useUser } from '../userContext';
 
 const PostsScreen = () => {
   return (

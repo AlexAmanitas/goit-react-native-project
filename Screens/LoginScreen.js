@@ -93,6 +93,8 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    marginLeft: 16,
+    marginRight: 16,
   },
 
   title: {

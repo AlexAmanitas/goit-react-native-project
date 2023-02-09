@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import PostItem from '../component/PostComponent';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   const { login, logOut } = useUser();
   return (
     <ImageBackground
@@ -25,10 +25,10 @@ const ProfileScreen = () => {
           source={require('../assets/images/user.jpg')}
         />
         <Pressable onPress={logOut} style={styles.icon}>
-          <MaterialCommunityIcons name="logout" size={36} color="#ccc" />
+          <MaterialCommunityIcons name="logout" size={26} color="#aaa" />
         </Pressable>
         <Text style={styles.name}>{login}</Text>
-        <PostItem style={styles.post} />
+        <PostItem style={styles.post} navigation={navigation} />
       </View>
     </ImageBackground>
   );
@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     position: 'relative',
+    marginLeft: 16,
+    marginRight: 16,
   },
   post: {
     backgroundColor: '#ccc',
@@ -76,8 +78,8 @@ const styles = StyleSheet.create({
 
   icon: {
     position: 'absolute',
-    top: 30,
-    right: 20,
+    top: 20,
+    right: 15,
   },
 
   name: {

@@ -1,49 +1,51 @@
-import React from 'react';
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  ImageBackground,
-  Platform,
-  Alert,
-  Text,
-  Pressable,
-  Image,
-} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const PostItem = () => {
+const PostItem = ({ navigation }) => {
+  const [like, setLike] = useState(153);
+
+  const pressComment = () => {
+    console.log('fdret', navigation);
+    navigation.navigate('Comment');
+  };
+
+  const pressLike = () => {
+    setLike(like + 1);
+  };
+
+  const pressMapMarker = () => {
+    navigation.navigate('Map');
+  };
+
   return (
     <View>
       <Image
         style={styles.image}
         source={require('../assets/images/postImage.jpg')}
       />
-      <Text>Forest</Text>
+      <Text style={styles.signature}>Forest</Text>
       <View style={styles.signatureBox}>
-        <View style={styles.viewBox}>
+        <Pressable onPress={pressComment} style={styles.viewBox}>
           <MaterialCommunityIcons name="comment" color="#ff6c00" size={24} />
           <Text style={styles.view}>8</Text>
-        </View>
-        <View style={styles.likeBox}>
+        </Pressable>
+        <Pressable onPress={pressLike} style={styles.likeBox}>
           <MaterialCommunityIcons
             name="thumb-up-outline"
             color="#ff6c00"
             size={24}
           />
-          <Text style={styles.like}>153</Text>
-        </View>
-        <View style={styles.localBox}>
+          <Text style={styles.like}>{like}</Text>
+        </Pressable>
+        <Pressable onPress={pressMapMarker} style={styles.localBox}>
           <MaterialCommunityIcons
             name="map-marker-outline"
-            color="#ccc"
+            color="#aaa"
             size={24}
           />
           <Text style={styles.local}>Ukraine</Text>
-        </View>
+        </Pressable>
       </View>
     </View>
   );
@@ -57,6 +59,10 @@ const styles = StyleSheet.create({
     width: 343,
     height: 240,
   },
+  signature: {
+    marginLeft: 16,
+  },
+
   signatureBox: {
     display: 'flex',
     flexDirection: 'row',
@@ -81,6 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginLeft: 'auto',
+    marginRight: 16,
   },
   local: {
     marginLeft: 7,

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, Text } from 'react-native-web';
+import { StyleSheet, View, Image, Text } from 'react-native';
 import { useUser } from '../userContext';
 
 const PostsScreen = () => {
@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   name: {
-    fontWeight: 700,
+    fontWeight: 'bold',
     fontSize: 13,
     lineHeight: 15,
   },
   email: {
-    fontWeight: 400,
+    fontWeight: 'normal',
     fontSize: 11,
     lineHeight: 13,
   },

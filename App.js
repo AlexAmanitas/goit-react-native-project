@@ -53,7 +53,7 @@ const App = () => {
 export default App;
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    // padding: 16,
     // backgroundColor: 'grey',
 
     flex: 1,

@@ -18,6 +18,7 @@ const Home = () => {
         name="Публікації"
         component={PostsScreen}
         options={{
+          tabBarShowLabel: false,
           tabBarLabel: 'Публікації',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -37,6 +38,7 @@ const Home = () => {
         name="Створити публикацію"
         component={CreatePostsScreen}
         options={{
+          tabBarShowLabel: false,
           tabBarLabel: 'Створити публикацію',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="plus" color={color} size={size} />
@@ -47,6 +49,7 @@ const Home = () => {
         name="Профіль"
         component={ProfileScreen}
         options={{
+          tabBarShowLabel: false,
           tabBarLabel: 'Профіль',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons

@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '../userContext';
+import Login from './LoginScreen';
 
 const Registration = ({ navigation }) => {
   const { logIn, login, email, password, setLogin, setEmail, setPassword } =
@@ -35,7 +36,8 @@ const Registration = ({ navigation }) => {
   };
 
   const onTransition = () => {
-    navigation.navigate('Логін');
+    // navigation.navigate('Логін');
+    logIn();
   };
 
   const addPhoto = () => {
@@ -114,6 +116,8 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    marginLeft: 16,
+    marginRight: 16,
   },
 
   avatar: {
@@ -144,6 +148,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8E8E8',
     marginTop: 16,
     borderRadius: 10,
+    marginLeft: 16,
+    marginRight: 16,
   },
   button: {
     backgroundColor: '#FF6C00',
@@ -152,6 +158,8 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     marginTop: 43,
     justifyContent: 'center',
+    marginLeft: 16,
+    marginRight: 16,
   },
 
   text: {

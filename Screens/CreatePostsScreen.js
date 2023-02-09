@@ -5,7 +5,7 @@ import {
   Text,
   ImageBackground,
   TextInput,
-} from 'react-native-web';
+} from 'react-native';
 import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

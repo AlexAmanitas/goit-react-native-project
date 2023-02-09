@@ -1,10 +1,9 @@
-import { StyleSheet, View, Image, Text } from 'react-native-web';
+import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
 import CreatePostsScreen from './CreatePostsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Pressable } from 'react-native';
 import { useUser } from '../userContext';
 
 const Tabs = createBottomTabNavigator();

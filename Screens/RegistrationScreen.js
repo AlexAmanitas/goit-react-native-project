@@ -14,16 +14,22 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useUser } from '../userContext';
 import Login from './LoginScreen';
+import { useDispatch } from 'react-redux';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 const Registration = ({ navigation }) => {
-  const { logIn, login, email, password, setLogin, setEmail, setPassword } =
-    useUser();
+  // const { logIn, login, email, password, setLogin, setEmail, setPassword } =
+  //   useUser();
+  const dispatch = useDispatch();
 
   const loginHandler = text => setLogin(text);
   const emailHandler = text => setEmail(text);
   const passwordHandler = text => setPassword(text);
+  const auth = getAuth();
+  createUserWithEmailAndPassword(auth, email, password).then(res =>
+    console.log(res)
+  );
 
   // console.log(login, email, password, isAuth);
 

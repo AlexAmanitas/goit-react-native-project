@@ -7,7 +7,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -107,7 +107,7 @@ const CreatePostsScreen = ({ navigation }) => {
           <MaterialCommunityIcons
             name="camera-flip-outline"
             size={24}
-            style={{ marginBottom: 10, marginRight: 10, color: 'white' }}
+            style={{ color: 'white' }}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.shootButton} onPress={takePhoto}>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backGroundColor: '#fff',
-    flex: 2,
+    flex: 1,
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
     // paddingLeft: 20,
@@ -175,6 +175,8 @@ const styles = StyleSheet.create({
   flipContainer: {
     flex: 0.1,
     alignSelf: 'flex-end',
+    marginRight: 10,
+    marginTop: 10,
   },
 
   shootButton: {

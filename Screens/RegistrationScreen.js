@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -17,19 +17,17 @@ import { Ionicons } from '@expo/vector-icons';
 import Login from './LoginScreen';
 import { useDispatch } from 'react-redux';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { registerUser } from '../redux/auth/sliceAuth';
 
 const Registration = ({ navigation }) => {
-  // const { logIn, login, email, password, setLogin, setEmail, setPassword } =
-  //   useUser();
   const dispatch = useDispatch();
+  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const loginHandler = text => setLogin(text);
   const emailHandler = text => setEmail(text);
   const passwordHandler = text => setPassword(text);
-  const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password).then(res =>
-    console.log(res)
-  );
 
   // console.log(login, email, password, isAuth);
 
@@ -37,7 +35,21 @@ const Registration = ({ navigation }) => {
     if (login === '' || email === '' || password === '') {
       return Alert.alert('Заповнить поля');
     } else {
-      logIn();
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(({ user }) => {
+          console.log(user);
+          dispatch(
+            registerUser({
+              name: login,
+              email: user.email,
+              id: user.uid,
+              token: user.accessToken,
+              isAuth: true,
+            })
+          );
+        })
+        .catch(console.error);
     }
   };
 

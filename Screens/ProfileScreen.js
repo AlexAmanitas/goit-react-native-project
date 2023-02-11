@@ -1,5 +1,6 @@
 import React from 'react';
-import { useUser } from '../userContext';
+import { selectUser } from '../redux/auth/selectors';
+import { logOutUser } from '../redux/auth/sliceAuth';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Pressable,
@@ -8,12 +9,18 @@ import {
   Image,
   Text,
   ImageBackground,
-  FlatList,
 } from 'react-native';
 import PostItem from '../component/PostComponent';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProfileScreen = ({ navigation }) => {
-  const { login, logOut } = useUser();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  const logOut = () => {
+    dispatch(logOutUser());
+  };
+
   return (
     <ImageBackground
       source={require('../assets/images/background_img2.jpg')}
@@ -27,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
         <Pressable onPress={logOut} style={styles.icon}>
           <MaterialCommunityIcons name="logout" size={26} color="#aaa" />
         </Pressable>
-        <Text style={styles.name}>{login}</Text>
+        <Text style={styles.name}>{user.name}</Text>
         <PostItem style={styles.post} navigation={navigation} />
       </View>
     </ImageBackground>

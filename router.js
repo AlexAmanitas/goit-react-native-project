@@ -7,12 +7,12 @@ import Registration from './Screens/RegistrationScreen';
 import Home from './Screens/Home';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useUser } from './userContext';
-
+import { selectIsAuth } from './redux/auth/selectors';
+import { useSelector } from 'react-redux';
 const Stack = createStackNavigator();
 
 export const Route = () => {
-  const { isAuth } = useUser();
+  const isAuth = useSelector(state => state.auth.isAuth);
   if (!isAuth) {
     return (
       <Stack.Navigator initialRouteName="Реєстрація" style={styles.navBox}>

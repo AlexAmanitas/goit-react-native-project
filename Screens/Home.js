@@ -5,12 +5,17 @@ import PostsScreen from './PostsScreen';
 import CreatePostsScreen from './CreatePostsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Pressable } from 'react-native';
-import { useUser } from '../userContext';
+import { logOutUser } from '../redux/auth/sliceAuth';
+import { useDispatch } from 'react-redux';
 
 const Tabs = createBottomTabNavigator();
 
 const Home = () => {
-  const { logOut } = useUser();
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(logOutUser());
+  };
 
   return (
     <Tabs.Navigator>

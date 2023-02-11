@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { Route } from './router';
-import { UserProvider } from './userContext';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import './firebase/config';
@@ -42,6 +41,7 @@ const App = () => {
   }
 
   return (
+    // <UserProvider>
     <Provider store={store}>
       <NavigationContainer>
         <View style={styles.container} onLayout={onLayoutRootView}>
@@ -49,6 +49,7 @@ const App = () => {
         </View>
       </NavigationContainer>
     </Provider>
+    // </UserProvider>
   );
 };
 

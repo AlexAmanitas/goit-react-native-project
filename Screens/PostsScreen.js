@@ -1,7 +1,10 @@
 import { StyleSheet, View, Image, Text } from 'react-native';
-import { useUser } from '../userContext';
+import { selectName, selectEmail } from '../redux/auth/selectors';
+import { useSelector } from 'react-redux';
 
 const PostsScreen = () => {
+  const name = useSelector(selectName);
+  const email = useSelector(selectEmail);
   return (
     <View style={styles.avatar}>
       <Image
@@ -9,8 +12,8 @@ const PostsScreen = () => {
         source={require('../assets/images/user.jpg')}
       />
       <View style={styles.wraper}>
-        <Text style={styles.name}>Natali Romanova</Text>
-        <Text style={styles.email}>email@example.com</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.email}>{email}</Text>
       </View>
     </View>
   );

@@ -14,10 +14,8 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Login from './LoginScreen';
 import { useDispatch } from 'react-redux';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { registerUser } from '../redux/auth/sliceAuth';
+import { register } from '../redux/auth/authOperations';
 
 const Registration = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -35,27 +33,13 @@ const Registration = ({ navigation }) => {
     if (login === '' || email === '' || password === '') {
       return Alert.alert('Заповнить поля');
     } else {
-      const auth = getAuth();
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(({ user }) => {
-          console.log(user);
-          dispatch(
-            registerUser({
-              name: login,
-              email: user.email,
-              id: user.uid,
-              token: user.accessToken,
-              isAuth: true,
-            })
-          );
-        })
-        .catch(console.error);
+      dispatch(register({ email, password, login }));
     }
   };
 
   const onTransition = () => {
-    // navigation.navigate('Логін');
-    logIn();
+    navigation.navigate('Логін');
+    // logIn();
   };
 
   const addPhoto = () => {
@@ -193,3 +177,32 @@ const styles = StyleSheet.create({
 });
 
 export default Registration;
+
+// const auth = getAuth();
+// console.log('auth', auth);
+// createUserWithEmailAndPassword(auth, email, password)
+//   .then(({ user }) => {
+//     console.log(user);
+//     updateProfile(auth.currentUser, { displayName: login }).then(() => {
+//       dispatch(
+//         registerUser({
+//           name: user.displayName,
+//           email: user.email,
+//           id: user.uid,
+//           token: user.accessToken,
+//           isAuth: true,
+//         })
+//       );
+//     });
+//   })
+//   .catch(err => {
+//     console.log(err);
+// if (`${err}`.includes('auth/email-already-in-use')) {
+//   Alert.alert(
+//     'Юзвер з таким ємайлом вже існує))) Заходіть на сторінку логіну'
+//   );
+//   navigation.navigate('Логін');
+//     } else {
+//       console.log('------------------------------');
+//     }
+//   });

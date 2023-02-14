@@ -7,12 +7,38 @@ import Registration from './Screens/RegistrationScreen';
 import Home from './Screens/Home';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { selectIsAuth } from './redux/auth/selectors';
 import { useSelector } from 'react-redux';
+import {
+  getAuth,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+} from 'firebase/auth';
+import { refreshUser } from './redux/auth/sliceAuth';
+import { useDispatch } from 'react-redux';
+
 const Stack = createStackNavigator();
 
 export const Route = () => {
+  const dispatch = useDispatch();
+  const auth = getAuth();
+  onAuthStateChanged(auth, user => {
+    console.log(user);
+    if (user) {
+      console.log('User sign in', user);
+      dispatch(
+        refreshUser({
+          name: user.displayName,
+          email: user.email,
+          id: user.uid,
+          token: user.accessToken,
+        })
+      );
+    } else {
+      console.log('User is signed out');
+    }
+  });
   const isAuth = useSelector(state => state.auth.isAuth);
+  console.log(isAuth);
   if (!isAuth) {
     return (
       <Stack.Navigator initialRouteName="Реєстрація" style={styles.navBox}>

@@ -1,20 +1,19 @@
-import { StyleSheet, View, Image, Text } from 'react-native-web';
+import { StyleSheet, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
 import CreatePostsScreen from './CreatePostsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Pressable } from 'react-native';
-import { logOutUser } from '../redux/auth/sliceAuth';
 import { useDispatch } from 'react-redux';
+import { logOut } from '../redux/auth/authOperations';
 
 const Tabs = createBottomTabNavigator();
 
 const Home = () => {
   const dispatch = useDispatch();
 
-  const logOut = () => {
-    dispatch(logOutUser());
+  const logOutHandler = () => {
+    dispatch(logOut());
   };
 
   return (
@@ -33,7 +32,7 @@ const Home = () => {
             />
           ),
           headerRight: () => (
-            <Pressable onPress={logOut}>
+            <Pressable onPress={logOutHandler}>
               <MaterialCommunityIcons name="logout" size={24} color="black" />
             </Pressable>
           ),

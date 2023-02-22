@@ -13,15 +13,25 @@ import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 // import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { storage, db } from '../firebase/config';
+import { v4 } from 'uuid';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { addDoc, collection, doc } from 'firebase/firestore';
+import { useSelector } from 'react-redux';
+import { selectID, selectName } from '../redux/auth/selectors';
 
 const CreatePostsScreen = ({ navigation }) => {
-  const [imageTitle, setImageTitle] = useState('');
+  const [imageSignature, setImageSignature] = useState('');
   const [imageLocation, setImageLocation] = useState('');
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
+  const uid = useSelector(selectID);
+  const name = useSelector(selectName);
+
+  console.log('CreatePostsScreen');
 
   useEffect(() => {
     (async () => {
@@ -31,13 +41,14 @@ const CreatePostsScreen = ({ navigation }) => {
       setHasPermission(status === 'granted');
     })();
   }, []);
+
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
+      // let { status } = await Location.requestForegroundPermissionsAsync();
+      // if (status !== 'granted') {
+      //   setErrorMsg('Permission to access location was denied');
+      //   return;
+      // }
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
@@ -52,19 +63,21 @@ const CreatePostsScreen = ({ navigation }) => {
   }
 
   const imageTitleHandler = text => {
-    setImageTitle(text);
+    setImageSignature(text);
   };
 
   const imageLocationHandler = text => {
     setImageLocation(text);
   };
 
-  const imageDownloaderHandler = () => {};
+  const imageDownloaderHandler = () => {
+    // uploadPhotoToStorage();
+    console.log('upload');
+  };
 
   const onSubmit = async () => {
-    const location = await Location.getCurrentPositionAsync({});
     console.log(location.coords);
-    // cameraRef.stopRecording();
+    await uploadPostToStorage();
     navigation.navigate('Публікації');
   };
 
@@ -83,6 +96,42 @@ const CreatePostsScreen = ({ navigation }) => {
       console.log(photo);
 
       // await MediaLibrary.createAssetAsync(uri);
+    }
+  };
+
+  const uploadPhotoToStorage = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const imageId = v4();
+    const storageRef = ref(storage, `postImage/${imageId}`);
+
+    // 'file' comes from the Blob or File API
+    await uploadBytes(storageRef, file).then(snapshot => {
+      console.log('Uploaded a blob or file!');
+    });
+    const storageUrlPhoto = await getDownloadURL(
+      ref(storage, `postImage/${imageId}`)
+    );
+    console.log(storageUrlPhoto);
+    return storageUrlPhoto;
+  };
+
+  const uploadPostToStorage = async () => {
+    const photo = await uploadPhotoToStorage();
+    console.log(imageSignature, imageLocation, location.coords, photo);
+    try {
+      const docRef = await addDoc(collection(db, 'posts'), {
+        name,
+        uid,
+        imageSignature,
+        imageLocation,
+        location: location.coords,
+        photo,
+      });
+      console.log('Document written with ID: ', docRef.id);
+    } catch (e) {
+      console.error('Error adding document: ', e);
     }
   };
 
@@ -123,7 +172,7 @@ const CreatePostsScreen = ({ navigation }) => {
       </Pressable>
       <View styles={styles.box} backGroundColor="#fff">
         <TextInput
-          value={imageTitle}
+          value={imageSignature}
           onChangeText={imageTitleHandler}
           placeholder="Назва"
           style={styles.input}

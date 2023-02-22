@@ -22,9 +22,11 @@ export const Route = () => {
   const dispatch = useDispatch();
   const auth = getAuth();
   onAuthStateChanged(auth, user => {
-    console.log(user);
+    // console.log(user);
     if (user) {
-      console.log('User sign in', user);
+      // console.log('User sign in', user, user.displayName);
+      const { displayName, email, uid, accessToken } = user;
+      console.log(displayName, email, uid, accessToken);
       dispatch(
         refreshUser({
           name: user.displayName,

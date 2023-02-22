@@ -17,6 +17,8 @@ const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const name = useSelector(selectName);
 
+  console.log('ProfileScreen');
+
   const logOutHandler = () => {
     dispatch(logOut());
   };

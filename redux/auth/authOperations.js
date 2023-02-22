@@ -9,6 +9,8 @@ import {
   updateCurrentUser,
 } from 'firebase/auth';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { refreshUser } from './sliceAuth';
+import { useDispatch } from 'react-redux';
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -16,19 +18,26 @@ export const register = createAsyncThunk(
     console.log(credentials);
     const auth = getAuth();
     try {
-      const { user } = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         credentials.email,
         credentials.password
       );
 
-      updateProfile(auth.currentUser, { displayName: credentials.login });
-      console.log(user, user.displayName, user.email);
+      await updateProfile(auth.currentUser, { displayName: credentials.login });
+      const updateUser = auth.currentUser;
+      console.log(
+        updateUser,
+        updateUser.displayName,
+        updateUser.email,
+        updateUser.uid
+      );
+      // dispatch(refreshUpdupdateUser({ name: updateUser.displayName }));
       return {
-        name: user.displayName,
-        email: user.email,
-        id: user.uid,
-        token: user.accessToken,
+        name: updateUser.displayName,
+        email: updateUser.email,
+        id: updateUser.uid,
+        token: updateUser.accessToken,
       };
     } catch (error) {
       if (`${error}`.includes('auth/email-already-in-use')) {
@@ -36,6 +45,7 @@ export const register = createAsyncThunk(
           'Юзвер з таким ємайлом вже існує))) Заходіть на сторінку логіну'
         );
       }
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }

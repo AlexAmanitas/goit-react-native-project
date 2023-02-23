@@ -20,17 +20,19 @@ import { storage, db } from '../firebase/config';
 import PostsScreenItem from '../component/ComponenetPostsScreen';
 import { useState, useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
+import { getAuth, updateProfile } from 'firebase/auth';
 
 const PostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const name = useSelector(selectName);
   const email = useSelector(selectEmail);
   const userId = useSelector(selectID);
+  const avatar = getAuth().currentUser.photoURL;
 
   console.log('PostsScreen');
 
   const getAllPosts = async () => {
-    const q = query(collection(db, name), orderBy('date', 'desc'));
+    const q = query(collection(db, 'posts'));
     // const querySnapshot = await getDocs(q);
     // console.log(querySnapshot);
     // const post = [];
@@ -59,10 +61,6 @@ const PostsScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    // (async () => {
-    //   console.log(' useEffect PostScreen');
-    //   await getAllPosts();
-    // })();
     const q = query(collection(db, 'posts'));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const post = [];
@@ -85,10 +83,7 @@ const PostsScreen = ({ navigation }) => {
   return (
     <View style={styles.wrap}>
       <View style={styles.avatar}>
-        <Image
-          style={styles.image}
-          source={require('../assets/images/user.jpg')}
-        />
+        <Image style={styles.image} source={{ uri: avatar }} />
         <View style={styles.wraper}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.email}>{email}</Text>

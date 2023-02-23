@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const PostItem = ({ navigation }) => {
+const PostItem = ({ navigation, photo, title, location }) => {
   const [like, setLike] = useState(153);
 
   const pressComment = () => {
@@ -20,11 +20,8 @@ const PostItem = ({ navigation }) => {
 
   return (
     <View>
-      <Image
-        style={styles.image}
-        source={require('../assets/images/postImage.jpg')}
-      />
-      <Text style={styles.signature}>Forest</Text>
+      <Image style={styles.image} source={{ uri: photo }} />
+      <Text style={styles.signature}>{title}</Text>
       <View style={styles.signatureBox}>
         <Pressable onPress={pressComment} style={styles.viewBox}>
           <MaterialCommunityIcons name="comment" color="#ff6c00" size={24} />
@@ -44,7 +41,7 @@ const PostItem = ({ navigation }) => {
             color="#aaa"
             size={24}
           />
-          <Text style={styles.local}>Ukraine</Text>
+          <Text style={styles.local}>{location}</Text>
         </Pressable>
       </View>
     </View>

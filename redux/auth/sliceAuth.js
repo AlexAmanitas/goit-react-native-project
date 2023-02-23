@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { register, logIn, logOut, getUser, reset } from './authOperations';
+import { register, logIn, logOut, setAvatar, reset } from './authOperations';
 
 const initialState = {
   name: null,
@@ -60,47 +60,25 @@ const authSlice = createSlice({
       .addCase(logOut.rejected, (state, action) => {
         state.error = action.payload;
       });
-    // builder
-    //   .addCase(getUser.pending, state => {
-    //     state.error = null;
-    //   })
-    //   .addCase(getUser.fulfilled, (state, action) => {
-    //     console.log('payload', action.payload);
-    //     if (action.payload) {
-    //       state.name = action.payload.displayName;
-    //       state.email = action.payload.email;
-    //       state.token = action.payload.accessToken;
-    //       state.id = action.payload.uid;
-    //       state.error = null;
-    //       state.isAuth = true;
-    //     } else {
-    //       state.name = null;
-    //       state.email = null;
-    //       state.token = null;
-    //       state.id = null;
-    //       state.isAuth = false;
-    //     }
-    //   })
-    //   .addCase(getUser.rejected, state => {
-    //     state.error = action.payload;
-    //   });
-    // builder
-    //   .addCase(refreshUser.pending, state => {
-    //     state.error = null;
-    //   })
-    //   .addCase(refreshUser.fulfilled, (state, action) => {
-    //     console.log('payload', action.payload);
-    // state.name = action.payload.displayName;
-    // state.email = action.payload.email;
-    // state.token = action.payload.accessToken;
-    // state.id = action.payload.uid;
-    // state.error = null;
-    // state.isAuth = true;
-    //   })
-    //   .addCase(refreshUser.rejected, state => {
-    //     state.error = action.payload;
-    //   });
+    builder
+      .addCase(setAvatar.pending, state => {
+        state.error = null;
+      })
+      .addCase(setAvatar.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.name = action.payload.name;
+        state.email = action.payload.email;
+        state.token = action.payload.token;
+        state.id = action.payload.id;
+        state.avatar = action.payload.avatar;
+        state.error = null;
+        state.isAuth = true;
+      })
+      .addCase(setAvatar.rejected, (state, action) => {
+        state.error = action.payload;
+      });
   },
+
   reducers: {
     refreshUser: (state, action) => {
       console.log(action.payload);
@@ -108,6 +86,7 @@ const authSlice = createSlice({
       state.email = action.payload.email;
       state.token = action.payload.token;
       state.id = action.payload.id;
+      state.avatar = action.payload.avatar;
       state.error = null;
       state.isAuth = true;
     },

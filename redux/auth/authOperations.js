@@ -9,8 +9,16 @@ import {
   updateCurrentUser,
 } from 'firebase/auth';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { refreshUser } from './sliceAuth';
 import { useDispatch } from 'react-redux';
+import { async } from '@firebase/util';
+import uuid from 'react-native-uuid';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { storage, db } from '../../firebase/config';
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -24,7 +32,10 @@ export const register = createAsyncThunk(
         credentials.password
       );
 
-      await updateProfile(auth.currentUser, { displayName: credentials.login });
+      await updateProfile(auth.currentUser, {
+        displayName: credentials.login,
+        photoURL: credentials.avatar,
+      });
       const updateUser = auth.currentUser;
       console.log(
         updateUser,
@@ -38,6 +49,7 @@ export const register = createAsyncThunk(
         email: updateUser.email,
         id: updateUser.uid,
         token: updateUser.accessToken,
+        avatar: updateUser.photoURL,
       };
     } catch (error) {
       if (`${error}`.includes('auth/email-already-in-use')) {
@@ -67,6 +79,7 @@ export const logIn = createAsyncThunk(
         email: user.email,
         id: user.uid,
         token: user.accessToken,
+        avatar: user.photoURL,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -86,21 +99,37 @@ export const logOut = createAsyncThunk(
   }
 );
 
-// export const getUser = createAsyncThunk(
-//   'auth/getUser',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const auth = getAuth();
-//       const userData = await onAuthStateChanged(auth, user => {
-//         if (user) {
-//           return user;
-//         } else {
-//           return null;
-//         }
-//       });
-//       console.log(userData);
-//       const userJSON = JSON.stringify(userData);
-//       return JSON.parse(userJSON);
-//     } catch {}
-//   }
-// );
+export const setAvatar = createAsyncThunk(
+  'auth/setAvatar',
+  async (uri, { rejectWithValue }) => {
+    const auth = getAuth();
+    try {
+      const avatar = await uploadPhotoToStorage(uri);
+      await updateProfile(auth.currentUser, { photoURL: avatar });
+      const updateUser = auth.currentUser;
+      return {
+        name: updateUser.displayName,
+        email: updateUser.email,
+        id: updateUser.uid,
+        token: updateUser.accessToken,
+        avatar: updateUser.photoURL,
+      };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const uploadPhotoToStorage = async uri => {
+  const response = await fetch(uri);
+  const file = await response.blob();
+  const imageId = uuid.v4();
+  const storageRef = ref(storage, `avatar/${imageId}`);
+  await uploadBytes(storageRef, file).then(snapshot => {
+    console.log('Uploaded a blob or file!');
+  });
+  const storageUrlPhoto = await getDownloadURL(
+    ref(storage, `avatar/${imageId}`)
+  );
+  console.log(storageUrlPhoto);
+  return storageUrlPhoto;
+};

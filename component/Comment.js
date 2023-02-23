@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const CommentsScreen = () => {
+const Comment = () => {
   return <Text style={{ fontSize: 35 }}>Comment</Text>;
 };
 
-export default CommentsScreen;
+export default Comment;

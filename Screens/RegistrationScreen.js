@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,14 +14,20 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import { register } from '../redux/auth/authOperations';
+import { useDispatch, useSelector } from 'react-redux';
+import { register, setAvatar } from '../redux/auth/authOperations';
+import * as ImagePicker from 'expo-image-picker';
+import { selectName, selectAvatar } from '../redux/auth/selectors';
+import { uploadPhotoToStorage } from '../redux/auth/authOperations';
 
 const Registration = ({ navigation }) => {
   const dispatch = useDispatch();
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [ava, setAva] = useState(null);
+  const [avatar, setAvatar] = useState(null);
 
   const loginHandler = text => setLogin(text);
   const emailHandler = text => setEmail(text);
@@ -33,7 +39,7 @@ const Registration = ({ navigation }) => {
     if (login === '' || email === '' || password === '') {
       return Alert.alert('Заповнить поля');
     } else {
-      dispatch(register({ email, password, login }));
+      dispatch(register({ email, password, login, avatar }));
     }
   };
 
@@ -42,9 +48,25 @@ const Registration = ({ navigation }) => {
     // logIn();
   };
 
-  const addPhoto = () => {
-    console.log('Add photo');
+  const addPhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    setAva(result.assets[0].uri);
+    setAvatar(await uploadPhotoToStorage(result.assets[0].uri));
   };
+
+  useEffect(() => {
+    // console.log(ava);
+  }, [ava]);
+
+  // console.log(avatar);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -56,8 +78,8 @@ const Registration = ({ navigation }) => {
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           >
-            <View style={styles.avatar}>
-              <Image />
+            <View style={styles.avatarWraper}>
+              <Image style={styles.avatar} source={{ uri: ava }} />
               <Pressable onPress={addPhoto}>
                 <Ionicons
                   name="add-circle-outline"
@@ -121,8 +143,13 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16,
   },
-
   avatar: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+  },
+
+  avatarWraper: {
     position: 'absolute',
     top: -76,
     width: 120,

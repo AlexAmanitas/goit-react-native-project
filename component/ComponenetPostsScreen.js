@@ -6,7 +6,7 @@ const PostsScreenItem = ({ navigation, photo, title, location }) => {
   const pressComment = () => {
     navigation.navigate('Comment');
   };
-
+  console.log(photo);
   const pressMapMarker = () => {
     navigation.navigate('Map');
   };

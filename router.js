@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './Screens/LoginScreen';
-import Comment from './Screens/CommentsScreen';
+import CommentsScreen from './Screens/CommentsScreen';
 import PostItem from './component/PostComponent';
 import Map from './Screens/MapScreen';
 import Registration from './Screens/RegistrationScreen';
@@ -26,7 +26,7 @@ export const Route = () => {
     if (user) {
       // console.log('User sign in', user, user.displayName);
       const { displayName, email, uid, accessToken } = user;
-      console.log(displayName, email, uid, accessToken);
+      // console.log(displayName, email, uid, accessToken);
       dispatch(
         refreshUser({
           name: user.displayName,
@@ -57,7 +57,7 @@ export const Route = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Map" component={Map} />
-        <Stack.Screen name="Comment" component={Comment} />
+        <Stack.Screen name="CommentsScreen" component={CommentsScreen} />
         <Stack.Screen name="PostItem" component={PostItem} />
       </Stack.Navigator>
     );

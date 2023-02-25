@@ -17,7 +17,7 @@ import {
   QuerySnapshot,
 } from 'firebase/firestore';
 import { storage, db } from '../firebase/config';
-import PostsScreenItem from '../component/ComponenetPostsScreen';
+import PostItem from '../component/PostComponent';
 import { useState, useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { getAuth, updateProfile } from 'firebase/auth';
@@ -26,24 +26,14 @@ const PostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const name = useSelector(selectName);
   const email = useSelector(selectEmail);
-  const userId = useSelector(selectID);
-  const avatar = getAuth().currentUser.photoURL;
+  // const userId = useSelector(selectID);
+  const isAuth = useSelector(state => state.auth.isAuth);
+  console.log(isAuth);
 
-  console.log('PostsScreen');
+  console.log('PostsScreen', uid);
 
   const getAllPosts = async () => {
     const q = query(collection(db, 'posts'));
-    // const querySnapshot = await getDocs(q);
-    // console.log(querySnapshot);
-    // const post = [];
-    // querySnapshot.forEach(doc =>
-    //   post.push({
-    //     ...doc.data(),
-    //     id: doc.id,
-    //   })
-    // );
-    // console.log(post);
-    // setPosts(post);
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const post = [];
       querySnapshot.forEach(doc =>
@@ -78,10 +68,15 @@ const PostsScreen = ({ navigation }) => {
     };
   }, []);
 
-  console.log(posts);
+  if (!isAuth) return;
+
+  const avatar = getAuth().currentUser.photoURL;
+  const uid = getAuth().currentUser.uid;
+
+  console.log(posts, avatar);
 
   return (
-    <View style={styles.wrap}>
+    <View style={styles.container}>
       <View style={styles.avatar}>
         <Image style={styles.image} source={{ uri: avatar }} />
         <View style={styles.wraper}>
@@ -94,11 +89,13 @@ const PostsScreen = ({ navigation }) => {
         <FlatList
           data={posts}
           renderItem={({ item }) => (
-            <PostsScreenItem
+            <PostItem
               navigation={navigation}
               title={item.imageSignature}
               photo={item.photo}
               location={item.imageLocation}
+              uid={item.uid}
+              id={item.id}
             />
           )}
           keyExtractor={item => item.id}
@@ -109,7 +106,7 @@ const PostsScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  wrap: {
+  container: {
     overflow: 'scroll',
   },
 

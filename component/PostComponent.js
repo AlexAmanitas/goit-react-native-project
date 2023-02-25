@@ -1,22 +1,49 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  doc,
+  addDoc,
+  updateDoc,
+  increment,
+  getDoc,
+  collection,
+  getDocs,
+} from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { useEffect } from 'react';
 
-const PostItem = ({ navigation, photo, title, location }) => {
-  const [like, setLike] = useState(153);
+const PostItem = ({ navigation, photo, title, location, id, uid }) => {
+  const [like, setLike] = useState(0);
+  const [comment, setComment] = useState(0);
+
+  const getLikeAndComment = async () => {
+    const likeRef = doc(db, 'posts', id);
+    const docSnap = await getDoc(likeRef);
+    setComment(docSnap.data().comment);
+    setLike(docSnap.data().like);
+  };
+
+  const incrementLike = async () => {
+    const likeRef = doc(db, 'posts', id);
+    await updateDoc(likeRef, { like: increment(1) });
+  };
 
   const pressComment = () => {
     console.log('fdret', navigation);
-    navigation.navigate('Comment');
+    navigation.navigate('CommentsScreen', { photo, id, uid });
   };
 
   const pressLike = () => {
     setLike(like + 1);
+    incrementLike();
   };
 
   const pressMapMarker = () => {
     navigation.navigate('Map');
   };
+
+  getLikeAndComment();
 
   return (
     <View>
@@ -25,7 +52,7 @@ const PostItem = ({ navigation, photo, title, location }) => {
       <View style={styles.signatureBox}>
         <Pressable onPress={pressComment} style={styles.viewBox}>
           <MaterialCommunityIcons name="comment" color="#ff6c00" size={24} />
-          <Text style={styles.view}>8</Text>
+          <Text style={styles.view}>{comment}</Text>
         </Pressable>
         <Pressable onPress={pressLike} style={styles.likeBox}>
           <MaterialCommunityIcons
@@ -55,6 +82,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     width: 343,
     height: 240,
+    borderRadius: 15,
   },
   signature: {
     marginLeft: 16,

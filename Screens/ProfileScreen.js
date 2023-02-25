@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { selectName, selectAvatar } from '../redux/auth/selectors';
+import { selectName, selectAvatar, selectID } from '../redux/auth/selectors';
 import { logOut, setAvatar } from '../redux/auth/authOperations';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -17,13 +17,14 @@ import PostItem from '../component/PostComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import { getAuth, updateProfile } from 'firebase/auth';
-import { collection, query, onSnapshot } from 'firebase/firestore';
+import { collection, query, onSnapshot, where } from 'firebase/firestore';
 import { storage, db } from '../firebase/config';
 
 const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const name = useSelector(selectName);
   const avatar = useSelector(selectAvatar);
+  const id = useSelector(selectID);
   const state = useSelector(state => state.auth);
   const auth = getAuth();
   const [posts, setPosts] = useState([]);
@@ -50,12 +51,12 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const logOutHandler = () => {
-    // dispatch(logOut());
+    dispatch(logOut());
     console.log(state, auth.currentUser.photoURL);
   };
 
   useEffect(() => {
-    const q = query(collection(db, 'posts'));
+    const q = query(collection(db, 'posts'), where('uid', '==', id));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const post = [];
       querySnapshot.forEach(doc =>
@@ -78,15 +79,18 @@ const ProfileScreen = ({ navigation }) => {
       style={styles.image}
     >
       <View style={styles.box}>
-        <Image style={styles.avatar} source={{ uri: image }} />
-        <Pressable onPress={addPhoto}>
-          <Ionicons
-            name="add-circle-outline"
-            size={30}
-            color="#FF6C00"
-            style={styles.icon}
-          />
-        </Pressable>
+        <View style={styles.imageWraper}>
+          <Image style={styles.avatar} source={{ uri: image }} />
+          <Pressable onPress={addPhoto}>
+            <Ionicons
+              name="add-circle-outline"
+              size={30}
+              color="#E8E8E8"
+              style={styles.icon}
+            />
+          </Pressable>
+        </View>
+
         <Pressable onPress={logOutHandler} style={styles.logoutIcon}>
           <MaterialCommunityIcons name="logout" size={26} color="#aaa" />
         </Pressable>
@@ -100,6 +104,7 @@ const ProfileScreen = ({ navigation }) => {
                 title={item.imageSignature}
                 photo={item.photo}
                 location={item.imageLocation}
+                id={item.id}
               />
             )}
             keyExtractor={item => item.id}
@@ -131,10 +136,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
+  // imageWraper: { position: 'relative' },
+
   icon: {
     position: 'absolute',
-    top: 70,
-    left: 50,
+    top: 18,
+    left: 240,
+    rotate: '45deg',
+    collor: 'white',
   },
 
   container: {
@@ -150,7 +159,7 @@ const styles = StyleSheet.create({
 
   avatar: {
     position: 'absolute',
-    top: -76,
+    top: -58,
     width: 120,
     height: 120,
     backgroundColor: '#F6F6F6',
@@ -166,7 +175,7 @@ const styles = StyleSheet.create({
 
   name: {
     marginTop: 92,
-    marginBottom: 16,
+    marginBottom: 32,
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',

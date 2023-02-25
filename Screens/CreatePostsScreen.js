@@ -128,6 +128,7 @@ const CreatePostsScreen = ({ navigation }) => {
         imageLocation,
         location: location.coords,
         photo,
+        commentCounter: 0,
       });
       console.log('Document written with ID: ', docRef.id);
     } catch (e) {

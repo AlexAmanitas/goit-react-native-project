@@ -76,7 +76,7 @@ const CreatePostsScreen = ({ navigation }) => {
   };
 
   const onSubmit = async () => {
-    console.log(location.coords);
+    // console.log(location.coords);
     await uploadPostToStorage();
     navigation.navigate('Публікації');
   };
@@ -121,15 +121,16 @@ const CreatePostsScreen = ({ navigation }) => {
     const photo = await uploadPhotoToStorage();
     console.log(imageSignature, imageLocation, location.coords, photo);
     try {
-      const docRef = await addDoc(collection(db, 'posts'), {
+      const valueObj = {
         name,
         uid,
         imageSignature,
         imageLocation,
-        location: location.coords,
         photo,
         commentCounter: 0,
-      });
+      };
+      if (!location) valueObj.location = location.coords;
+      const docRef = await addDoc(collection(db, 'posts'), valueObj);
       console.log('Document written with ID: ', docRef.id);
     } catch (e) {
       console.error('Error adding document: ', e);

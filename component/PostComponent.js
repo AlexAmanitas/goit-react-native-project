@@ -13,7 +13,15 @@ import {
 import { db } from '../firebase/config';
 import { useEffect } from 'react';
 
-const PostItem = ({ navigation, photo, title, location, id, uid }) => {
+const PostItem = ({
+  navigation,
+  photo,
+  title,
+  imageLocation,
+  id,
+  uid,
+  location,
+}) => {
   const [like, setLike] = useState(0);
   const [comment, setComment] = useState(0);
 
@@ -30,7 +38,6 @@ const PostItem = ({ navigation, photo, title, location, id, uid }) => {
   };
 
   const pressComment = () => {
-    console.log('fdret', navigation);
     navigation.navigate('CommentsScreen', { photo, id, uid });
   };
 
@@ -40,7 +47,8 @@ const PostItem = ({ navigation, photo, title, location, id, uid }) => {
   };
 
   const pressMapMarker = () => {
-    navigation.navigate('Map');
+    console.log('fdret', location);
+    navigation.navigate('Map', { location });
   };
 
   getLikeAndComment();
@@ -68,7 +76,7 @@ const PostItem = ({ navigation, photo, title, location, id, uid }) => {
             color="#aaa"
             size={24}
           />
-          <Text style={styles.local}>{location}</Text>
+          <Text style={styles.local}>{imageLocation}</Text>
         </Pressable>
       </View>
     </View>

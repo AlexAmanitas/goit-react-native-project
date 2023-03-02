@@ -92,9 +92,10 @@ const PostsScreen = ({ navigation }) => {
               navigation={navigation}
               title={item.imageSignature}
               photo={item.photo}
-              location={item.imageLocation}
+              imageLocation={item.imageLocation}
               uid={item.uid}
               id={item.id}
+              location={item.location}
             />
           )}
           keyExtractor={item => item.id}
@@ -138,3 +139,45 @@ const styles = StyleSheet.create({
 });
 
 export default PostsScreen;
+
+// <Tab.Navigator
+// style={{ paddingTop: 9, height: 83 }}
+// screenOptions={({ route }) => ({
+//   tabBarShowLabel: false,
+//   tabBarIcon: ({ focused, color, size }) => {
+//     let iconName;
+
+//     if (route.name === 'Публікації') {
+//       iconName = 'view-grid-outline';
+//     } else if (route.name === 'Створити публикацію') {
+//       iconName = 'plus';
+//     } else if (route.name === 'Профіль') {
+//       iconName = 'account-outline';
+//     }
+
+//     return (
+//       <TouchableOpacity
+//         style={{
+//           // marginTop: 9,
+//           // marginBottom: 34,
+//           width: 70,
+//           height: 40,
+//           borderRadius: 20,
+//           backgroundColor: focused ? '#FF6C00' : '#fff',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//         }}
+//       >
+//         <MaterialCommunityIcons name={iconName} color={color} size={24} />
+//       </TouchableOpacity>
+//     );
+//   },
+//   tabBarActiveTintColor: '#fff',
+//   tabBarInactiveTintColor: 'gray',
+//   headerRight: () => (
+//     <Pressable onPress={logOutHandler}>
+//       <MaterialCommunityIcons name="logout" size={24} color="black" />
+//     </Pressable>
+//   ),
+// })}
+// ></Tab.Navigator>

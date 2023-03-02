@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View } from 'react-native';
+import { StyleSheet, Pressable, TouchableOpacity, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
@@ -20,6 +20,7 @@ const Home = () => {
     <Tabs.Navigator
       style={{ paddingTop: 9, height: 83 }}
       screenOptions={({ route }) => ({
+        tabBarShowLabel: false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -50,15 +51,30 @@ const Home = () => {
         },
         tabBarActiveTintColor: '#fff',
         tabBarInactiveTintColor: 'gray',
-        headerRight: () => (
-          <Pressable onPress={logOutHandler}>
-            <MaterialCommunityIcons name="logout" size={24} color="black" />
-          </Pressable>
-        ),
       })}
     >
-      <Tabs.Screen name="Публікації" component={PostsScreen} />
-      <Tabs.Screen name="Створити публикацію" component={CreatePostsScreen} />
+      <Tabs.Screen
+        name="Публікації"
+        component={PostsScreen}
+        options={{
+          headerRight: () => (
+            <Pressable onPress={logOutHandler}>
+              <MaterialCommunityIcons name="logout" size={24} color="black" />
+            </Pressable>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Створити публикацію"
+        component={CreatePostsScreen}
+        // options={{
+        //   tabBarShowLabel: false,
+        //   tabBarLabel: 'Створити публикацію',
+        //   tabBarIcon: ({ color, size }) => (
+        //     <MaterialCommunityIcons name="plus" color={color} size={size} />
+        //   ),
+        // }}
+      />
       <Tabs.Screen name="Профіль" component={ProfileScreen} />
     </Tabs.Navigator>
   );

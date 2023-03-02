@@ -77,15 +77,14 @@ const PostsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.avatar}>
-        <Image style={styles.image} source={{ uri: avatar }} />
-        <View style={styles.wraper}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.email}>{email}</Text>
-        </View>
-      </View>
-
       <SafeAreaView style={styles.wrap}>
+        <View style={styles.avatar}>
+          <Image style={styles.image} source={{ uri: avatar }} />
+          <View style={styles.wraper}>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.email}>{email}</Text>
+          </View>
+        </View>
         <FlatList
           data={posts}
           renderItem={({ item }) => (

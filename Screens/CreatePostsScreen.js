@@ -11,7 +11,7 @@ import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-// import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { storage, db } from '../firebase/config';
 import { v4 } from 'uuid';
@@ -44,11 +44,11 @@ const CreatePostsScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      // let { status } = await Location.requestForegroundPermissionsAsync();
-      // if (status !== 'granted') {
-      //   setErrorMsg('Permission to access location was denied');
-      //   return;
-      // }
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
@@ -198,23 +198,24 @@ const CreatePostsScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  box: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginLeft: 16,
-    marginRight: 16,
-  },
+  // box: {
+  //   paddingLeft: 20,
+  //   paddingRight: 20,
+  //   marginLeft: 16,
+  //   marginRight: 16,
+  // },
   container: {
     backGroundColor: '#fff',
     flex: 1,
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
-    // paddingLeft: 20,
-    // paddingRight: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   camera: {
     height: 300,
     marginTop: 30,
+    borderRadius: 5,
   },
   photoView: {
     flex: 1,

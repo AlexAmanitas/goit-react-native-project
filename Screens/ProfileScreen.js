@@ -81,11 +81,11 @@ const ProfileScreen = ({ navigation }) => {
       <View style={styles.box}>
         <View style={styles.imageWraper}>
           <Image style={styles.avatar} source={{ uri: image }} />
-          <Pressable onPress={addPhoto}>
+          <Pressable onPress={addPhoto} style={styles.pressIcon}>
             <Ionicons
               name="add-circle-outline"
               size={30}
-              color="#E8E8E8"
+              color="#bdbdbd"
               style={styles.icon}
             />
           </Pressable>
@@ -136,9 +136,24 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
-  // imageWraper: { position: 'relative' },
+  imageWraper: {
+    backgroundColor: 'green',
+    borderRadius: 17,
+    position: 'relative',
+    height: 0,
+  },
 
-  icon: {
+  avatar: {
+    position: 'absolute',
+    top: -48,
+    width: 120,
+    height: 120,
+
+    borderRadius: 15,
+    alignSelf: 'center',
+  },
+
+  pressIcon: {
     position: 'absolute',
     top: 18,
     left: 240,
@@ -146,25 +161,20 @@ const styles = StyleSheet.create({
     collor: 'white',
   },
 
+  icon: {
+    rotate: '45deg',
+  },
+
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'grey',
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     padding: 16,
     paddingBottom: 45,
     alignItems: 'stretch',
+    justifyContent: 'center',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-  },
-
-  avatar: {
-    position: 'absolute',
-    top: -58,
-    width: 120,
-    height: 120,
-    backgroundColor: '#F6F6F6',
-    borderRadius: 15,
-    alignSelf: 'center',
   },
 
   logoutIcon: {

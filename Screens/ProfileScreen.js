@@ -95,21 +95,21 @@ const ProfileScreen = ({ navigation }) => {
           <MaterialCommunityIcons name="logout" size={26} color="#aaa" />
         </Pressable>
         <Text style={styles.name}>{name}</Text>
-        <SafeAreaView style={styles.wrap}>
-          <FlatList
-            data={posts}
-            renderItem={({ item }) => (
-              <PostItem
-                navigation={navigation}
-                title={item.imageSignature}
-                photo={item.photo}
-                location={item.imageLocation}
-                id={item.id}
-              />
-            )}
-            keyExtractor={item => item.id}
-          />
-        </SafeAreaView>
+        <FlatList
+          data={posts}
+          renderItem={({ item }) => (
+            <PostItem
+              navigation={navigation}
+              title={item.imageSignature}
+              photo={item.photo}
+              imageLocation={item.imageLocation}
+              uid={item.uid}
+              id={item.id}
+              location={item.location}
+            />
+          )}
+          keyExtractor={item => item.id}
+        />
       </View>
     </ImageBackground>
   );
@@ -117,7 +117,7 @@ const ProfileScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   box: {
-    height: '70%',
+    height: '85%',
     backgroundColor: '#fff',
     fontSize: 45,
     borderTopLeftRadius: 20,

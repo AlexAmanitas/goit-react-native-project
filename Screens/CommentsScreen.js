@@ -40,6 +40,7 @@ const CommentsScreen = ({ route }) => {
   date.locale(uk);
 
   const createPost = async () => {
+    if (text === '') return;
     try {
       const time = date.format(new Date(), 'D MMMM YYYY | HH:mm');
       console.log({ avatar, text, time, id });
@@ -79,27 +80,24 @@ const CommentsScreen = ({ route }) => {
     getAllComments();
   }, []);
 
-  console.log(comments);
-
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={{ uri: photo }} />
 
-      <SafeAreaView>
-        <FlatList
-          data={comments}
-          renderItem={({ item }) => (
-            <Comment
-              avatar={item.avatar}
-              text={item.text}
-              time={item.time}
-              postUid={uid}
-              commentUid={item.uid}
-            />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
+      <FlatList
+        data={comments}
+        renderItem={({ item }) => (
+          <Comment
+            avatar={item.avatar}
+            text={item.text}
+            time={item.time}
+            postUid={uid}
+            commentUid={item.uid}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
+
       <View style={styles.inputWrap}>
         <TextInput
           onChangeText={text => setText(text)}
@@ -129,8 +127,8 @@ const styles = StyleSheet.create({
     // display: 'box',
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: '90vw',
-    height: '65vw',
+    width: '90%',
+    height: '40%',
     borderRadius: 15,
   },
 
@@ -138,20 +136,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // position: 'relative',
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 10,
   },
   input: {
-    width: '90vw',
+    width: '90%',
     height: 44,
     padding: 10,
     paddingRight: 50,
     backgroundColor: '#E8E8E8',
-
-    borderRadius: 10,
+    bottom: 0,
+    borderRadius: 22,
   },
   button: {
     position: 'absolute',
-    right: 10,
+    right: 20,
     top: '7%',
   },
 });

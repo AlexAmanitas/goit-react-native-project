@@ -29,10 +29,10 @@ export const Route = () => {
       // console.log(displayName, email, uid, accessToken);
       dispatch(
         refreshUser({
-          name: user.displayName,
-          email: user.email,
-          id: user.uid,
-          token: user.accessToken,
+          name: displayName,
+          email: email,
+          id: uid,
+          token: accessToken,
         })
       );
     } else {

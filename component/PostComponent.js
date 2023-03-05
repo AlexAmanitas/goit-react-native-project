@@ -38,6 +38,7 @@ const PostItem = ({
   };
 
   const pressComment = () => {
+    console.log('pressComment');
     navigation.navigate('CommentsScreen', { photo, id, uid });
   };
 
@@ -54,7 +55,7 @@ const PostItem = ({
   getLikeAndComment();
 
   return (
-    <View>
+    <View style={styles.container}>
       <Image style={styles.image} source={{ uri: photo }} />
       <Text style={styles.signature}>{title}</Text>
       <View style={styles.signatureBox}>
@@ -84,21 +85,28 @@ const PostItem = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 15,
+  },
+
   image: {
     // display: 'box',
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: 343,
+    width: '90%',
     height: 240,
     borderRadius: 15,
   },
   signature: {
-    marginLeft: 16,
+    marginTop: 10,
+    marginLeft: 35,
   },
 
   signatureBox: {
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'baseline',
   },
   viewBox: {
     alignItems: 'center',

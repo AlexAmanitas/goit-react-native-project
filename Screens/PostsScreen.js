@@ -30,7 +30,7 @@ const PostsScreen = ({ navigation }) => {
   const isAuth = useSelector(state => state.auth.isAuth);
   console.log(isAuth);
 
-  console.log('PostsScreen', uid);
+  console.log('PostsScreen');
 
   const getAllPosts = async () => {
     const q = query(collection(db, 'posts'));
@@ -77,30 +77,30 @@ const PostsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.wrap}>
-        <View style={styles.avatar}>
-          <Image style={styles.image} source={{ uri: avatar }} />
-          <View style={styles.wraper}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.email}>{email}</Text>
-          </View>
+      <View style={styles.avatar}>
+        <Image style={styles.image} source={{ uri: avatar }} />
+        <View style={styles.wraper}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.email}>{email}</Text>
         </View>
-        <FlatList
-          data={posts}
-          renderItem={({ item }) => (
-            <PostItem
-              navigation={navigation}
-              title={item.imageSignature}
-              photo={item.photo}
-              imageLocation={item.imageLocation}
-              uid={item.uid}
-              id={item.id}
-              location={item.location}
-            />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
+      </View>
+      {/* <SafeAreaView style={styles.wrap}> */}
+      <FlatList
+        data={posts}
+        renderItem={({ item }) => (
+          <PostItem
+            navigation={navigation}
+            title={item.imageSignature}
+            photo={item.photo}
+            imageLocation={item.imageLocation}
+            uid={item.uid}
+            id={item.id}
+            location={item.location}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
+      {/* </SafeAreaView> */}
     </View>
   );
 };

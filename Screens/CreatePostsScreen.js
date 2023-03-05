@@ -6,6 +6,12 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Platform,
+  Keyboard,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -76,7 +82,7 @@ const CreatePostsScreen = ({ navigation }) => {
   };
 
   const onSubmit = async () => {
-    // console.log(location.coords);
+    console.log(navigation);
     await uploadPostToStorage();
     navigation.navigate('Публікації');
   };
@@ -129,7 +135,7 @@ const CreatePostsScreen = ({ navigation }) => {
         photo,
         commentCounter: 0,
       };
-      if (!location) valueObj.location = location.coords;
+      if (location) valueObj.location = location.coords;
       const docRef = await addDoc(collection(db, 'posts'), valueObj);
       console.log('Document written with ID: ', docRef.id);
     } catch (e) {
@@ -138,63 +144,77 @@ const CreatePostsScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Camera
-        style={styles.camera}
-        type={type}
-        ref={ref => {
-          setCameraRef(ref);
-        }}
-      >
-        {photo && (
-          <View style={styles.takePhotoContainer}>
-            <Image
-              source={{ uri: photo }}
-              style={{ width: 200, height: 200 }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView styles={styles.box} backGroundColor="#fff">
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <Camera
+              style={styles.camera}
+              type={type}
+              ref={ref => {
+                setCameraRef(ref);
+              }}
+            >
+              {photo && (
+                <View style={styles.takePhotoContainer}>
+                  <Image
+                    source={{ uri: photo }}
+                    style={{ width: 200, height: 200 }}
+                  />
+                </View>
+              )}
+              <TouchableOpacity
+                style={styles.flipContainer}
+                onPress={flipCamera}
+              >
+                <MaterialCommunityIcons
+                  name="camera-flip-outline"
+                  size={24}
+                  style={{ color: 'white' }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.shootButton} onPress={takePhoto}>
+                <View style={styles.takePhotoOut}>
+                  <View style={styles.takePhotoInner}>
+                    <MaterialCommunityIcons name="camera-outline" size={24} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Camera>
+            <Pressable onPress={imageDownloaderHandler}>
+              <Text style={styles.text}>Завантажте фото</Text>
+            </Pressable>
+
+            <TextInput
+              value={imageSignature}
+              onChangeText={imageTitleHandler}
+              placeholder="Назва"
+              style={styles.input}
             />
-          </View>
-        )}
-        <TouchableOpacity style={styles.flipContainer} onPress={flipCamera}>
-          <MaterialCommunityIcons
-            name="camera-flip-outline"
-            size={24}
-            style={{ color: 'white' }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.shootButton} onPress={takePhoto}>
-          <View style={styles.takePhotoOut}>
-            <View style={styles.takePhotoInner}>
-              <MaterialCommunityIcons name="camera-outline" size={24} />
+            <View position="relative">
+              <Pressable style={styles.mapButton}>
+                <MaterialCommunityIcons
+                  name="map-marker-plus-outline"
+                  size={24}
+                />
+              </Pressable>
+              <TextInput
+                value={imageLocation}
+                onChangeText={imageLocationHandler}
+                placeholder="Місцевість"
+                style={styles.input}
+              ></TextInput>
             </View>
+            <Pressable onPress={onSubmit} style={styles.button}>
+              <Text style={styles.buttonText}>Опублікувати</Text>
+            </Pressable>
           </View>
-        </TouchableOpacity>
-      </Camera>
-      <Pressable onPress={imageDownloaderHandler}>
-        <Text style={styles.text}>Завантажте фото</Text>
-      </Pressable>
-      <View styles={styles.box} backGroundColor="#fff">
-        <TextInput
-          value={imageSignature}
-          onChangeText={imageTitleHandler}
-          placeholder="Назва"
-          style={styles.input}
-        />
-        <View position="relative">
-          <Pressable style={styles.mapButton}>
-            <MaterialCommunityIcons name="map-marker-plus-outline" size={24} />
-          </Pressable>
-          <TextInput
-            value={imageLocation}
-            onChangeText={imageLocationHandler}
-            placeholder="Місцевість"
-            style={styles.input}
-          ></TextInput>
-        </View>
-        <Pressable onPress={onSubmit} style={styles.button}>
-          <Text style={styles.buttonText}>Опублікувати</Text>
-        </Pressable>
-      </View>
-    </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

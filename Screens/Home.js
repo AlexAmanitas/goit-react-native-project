@@ -35,8 +35,6 @@ const Home = () => {
           return (
             <View
               style={{
-                // marginTop: 9,
-                // marginBottom: 34,
                 width: 70,
                 height: 40,
                 borderRadius: 20,
@@ -64,28 +62,10 @@ const Home = () => {
           ),
         }}
       />
-      <Tabs.Screen
-        name="Створити публикацію"
-        component={CreatePostsScreen}
-        // options={{
-        //   tabBarShowLabel: false,
-        //   tabBarLabel: 'Створити публикацію',
-        //   tabBarIcon: ({ color, size }) => (
-        //     <MaterialCommunityIcons name="plus" color={color} size={size} />
-        //   ),
-        // }}
-      />
+      <Tabs.Screen name="Створити публикацію" component={CreatePostsScreen} />
       <Tabs.Screen name="Профіль" component={ProfileScreen} />
     </Tabs.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Home;

@@ -5,6 +5,7 @@ import {
   Text,
   FlatList,
   SafeAreaView,
+  VirtualizedList,
 } from 'react-native';
 import { selectName, selectEmail, selectID } from '../redux/auth/selectors';
 import { useSelector } from 'react-redux';
@@ -24,33 +25,36 @@ import { getAuth, updateProfile } from 'firebase/auth';
 
 const PostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
+  const [avatar, setAvatar] = useState(null);
   const name = useSelector(selectName);
   const email = useSelector(selectEmail);
   // const userId = useSelector(selectID);
   const isAuth = useSelector(state => state.auth.isAuth);
-  console.log(isAuth);
 
-  console.log('PostsScreen');
+  console.log('PostsScreen', isAuth);
 
-  const getAllPosts = async () => {
-    const q = query(collection(db, 'posts'));
-    const unsubscribe = onSnapshot(q, querySnapshot => {
-      const post = [];
-      querySnapshot.forEach(doc =>
-        post.push({
-          ...doc.data(),
-          id: doc.id,
-        })
-      );
-      console.log(post);
-      setPosts(post);
-    });
-    return () => {
-      unsubscribe();
-    };
-  };
+  // const getAllPosts = async () => {
+  //   const q = query(collection(db, 'posts'));
+  //   const unsubscribe = onSnapshot(q, querySnapshot => {
+  //     const post = [];
+  //     querySnapshot.forEach(doc =>
+  //       post.push({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //       })
+  //     );
+  //     console.log(post);
+  //     setPosts(post);
+  //   });
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // };
 
   useEffect(() => {
+    if (!isAuth) return;
+    setAvatar(getAuth().currentUser.photoURL);
+
     const q = query(collection(db, 'posts'));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const post = [];
@@ -68,39 +72,50 @@ const PostsScreen = ({ navigation }) => {
     };
   }, []);
 
-  if (!isAuth) return;
+  // const uid = getAuth().currentUser.uid;
 
-  const avatar = getAuth().currentUser.photoURL;
-  const uid = getAuth().currentUser.uid;
+  const getItemCount = () => posts.length;
 
-  console.log(posts, avatar);
+  const getItem = (posts, index) => ({
+    title: posts[index].imageSignature,
+    photo: posts[index].photo,
+    imageLocation: posts[index].imageLocation,
+    uid: posts[index].uid,
+    id: posts[index].id,
+    location: posts[index].location,
+  });
 
   return (
     <View style={styles.container}>
-      <View style={styles.avatar}>
-        <Image style={styles.image} source={{ uri: avatar }} />
-        <View style={styles.wraper}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.email}>{email}</Text>
-        </View>
-      </View>
-      {/* <SafeAreaView style={styles.wrap}> */}
-      <FlatList
-        data={posts}
-        renderItem={({ item }) => (
-          <PostItem
-            navigation={navigation}
-            title={item.imageSignature}
-            photo={item.photo}
-            imageLocation={item.imageLocation}
-            uid={item.uid}
-            id={item.id}
-            location={item.location}
+      {isAuth && (
+        <>
+          <View style={styles.avatar}>
+            <Image style={styles.image} source={{ uri: avatar }} />
+            <View style={styles.wraper}>
+              <Text style={styles.name}>{name}</Text>
+              <Text style={styles.email}>{email}</Text>
+            </View>
+          </View>
+          <VirtualizedList
+            data={posts}
+            initialNumToRender={posts.length}
+            renderItem={({ item }) => (
+              <PostItem
+                navigation={navigation}
+                title={item.title}
+                photo={item.photo}
+                imageLocation={item.imageLocation}
+                uid={item.uid}
+                id={item.id}
+                location={item.location}
+              />
+            )}
+            keyExtractor={item => item.id}
+            getItemCount={getItemCount}
+            getItem={getItem}
           />
-        )}
-        keyExtractor={item => item.id}
-      />
-      {/* </SafeAreaView> */}
+        </>
+      )}
     </View>
   );
 };

@@ -21,17 +21,18 @@ import { collection, query, onSnapshot, where } from 'firebase/firestore';
 import { storage, db } from '../firebase/config';
 
 const ProfileScreen = ({ navigation }) => {
+  const auth = getAuth();
+  // const state = useSelector(state => state.auth);
+
+  const isAuth = useSelector(state => state.auth.isAuth);
+
   const dispatch = useDispatch();
   const name = useSelector(selectName);
-  const avatar = useSelector(selectAvatar);
   const id = useSelector(selectID);
-  const state = useSelector(state => state.auth);
-  const auth = getAuth();
   const [posts, setPosts] = useState([]);
+  const [image, setImage] = useState();
 
-  const [image, setImage] = useState(auth.currentUser.photoURL);
-
-  console.log('ProfileScreen', auth.currentUser);
+  console.log('ProfileScreen');
 
   const addPhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,16 +47,17 @@ const ProfileScreen = ({ navigation }) => {
       const uri = result.assets[0].uri;
       setImage(uri);
       dispatch(setAvatar(uri));
-      console.log(image);
     }
   };
 
   const logOutHandler = () => {
     dispatch(logOut());
-    console.log(state, auth.currentUser.photoURL);
   };
 
   useEffect(() => {
+    if (!isAuth) return;
+
+    setImage(auth.currentUser.photoURL);
     const q = query(collection(db, 'posts'), where('uid', '==', id));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const post = [];

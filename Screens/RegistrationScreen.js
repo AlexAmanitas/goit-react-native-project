@@ -12,6 +12,7 @@ import {
   Text,
   Pressable,
   Image,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -69,26 +70,27 @@ const Registration = ({ navigation }) => {
   // console.log(avatar);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ImageBackground
-        source={require('../assets/images/background_img2.jpg')}
-        style={styles.image}
-      >
-        <View style={styles.container}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          >
-            <View style={styles.avatarWraper}>
-              <Image style={styles.avatar} source={{ uri: ava }} />
-              <Pressable onPress={addPhoto}>
-                <Ionicons
-                  name="add-circle-outline"
-                  size={30}
-                  color="#FF6C00"
-                  style={styles.icon}
-                />
-              </Pressable>
-            </View>
+    <ImageBackground
+      source={require('../assets/images/background_img2.jpg')}
+      style={styles.image}
+    >
+      <View style={styles.container}>
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+        <View style={styles.avatarWraper}>
+          <Image style={styles.avatar} source={{ uri: ava }} />
+          <Pressable onPress={addPhoto}>
+            <Ionicons
+              name="add-circle-outline"
+              size={30}
+              color="#FF6C00"
+              style={styles.icon}
+            />
+          </Pressable>
+        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <ScrollView>
             <Text style={styles.title}>Реєстрація</Text>
             <TextInput
               value={login}
@@ -109,6 +111,7 @@ const Registration = ({ navigation }) => {
               secureTextEntry={true}
               style={styles.input}
             />
+
             <Pressable onPress={onSubmit} style={styles.button}>
               <Text style={styles.text}>Зареєструватись</Text>
             </Pressable>
@@ -118,10 +121,11 @@ const Registration = ({ navigation }) => {
                 <Text style={styles.loginLink}>Увійти</Text>
               </Pressable>
             </View>
-          </KeyboardAvoidingView>
-        </View>
-      </ImageBackground>
-    </TouchableWithoutFeedback>
+            {/* </TouchableWithoutFeedback> */}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -147,10 +151,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 120,
     height: 120,
+    borderRadius: 10,
   },
 
   avatarWraper: {
     position: 'absolute',
+    zIndex: 5,
     top: -76,
     width: 120,
     height: 120,

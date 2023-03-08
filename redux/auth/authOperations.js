@@ -9,8 +9,6 @@ import {
   updateCurrentUser,
 } from 'firebase/auth';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-import { async } from '@firebase/util';
 import uuid from 'react-native-uuid';
 import {
   ref,

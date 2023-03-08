@@ -5,7 +5,12 @@ import MapView, { Marker } from 'react-native-maps';
 
 const Map = ({ route }) => {
   console.log(route.params);
-  const { latitude = 50.011206, longitude = 36.241585 } = route.params.location;
+  let latitude = 50.011206;
+  let longitude = 36.241585;
+  if (route.params.location) {
+    latitude = route.params.location.latitude;
+    longitude = route.params.location.longitude;
+  }
   return (
     <View style={styles.container}>
       <MapView

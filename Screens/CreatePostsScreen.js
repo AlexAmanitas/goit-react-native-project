@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Camera } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -25,6 +25,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { selectID, selectName } from '../redux/auth/selectors';
+import { useIsFocused } from '@react-navigation/native';
 
 const CreatePostsScreen = ({ navigation }) => {
   const [imageSignature, setImageSignature] = useState('');
@@ -34,8 +35,10 @@ const CreatePostsScreen = ({ navigation }) => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const uid = useSelector(selectID);
   const name = useSelector(selectName);
+  const isFocused = useIsFocused();
 
   console.log('CreatePostsScreen');
 
@@ -46,13 +49,16 @@ const CreatePostsScreen = ({ navigation }) => {
 
       setHasPermission(status === 'granted');
     })();
-  }, []);
-
-  useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
+        setLocation({
+          coords: {
+            latitude: 50.011206,
+            longitude: 36.241585,
+          },
+        });
         return;
       }
 
@@ -61,12 +67,14 @@ const CreatePostsScreen = ({ navigation }) => {
     })();
   }, []);
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  // useEffect(() => {}, []);
+
+  // if (hasPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
 
   const imageTitleHandler = text => {
     setImageSignature(text);
@@ -80,26 +88,26 @@ const CreatePostsScreen = ({ navigation }) => {
     // uploadPhotoToStorage();
     console.log('upload');
   };
-
   const onSubmit = async () => {
-    console.log(navigation);
     await uploadPostToStorage();
+    setImageSignature('');
+    setImageLocation('');
+    setPhoto(null);
     navigation.navigate('Публікації');
   };
 
   const flipCamera = () => {
-    setType(
-      type === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back
+    setType(current =>
+      current === CameraType.back ? CameraType.front : CameraType.back
     );
   };
 
   const takePhoto = async () => {
+    // console.log(cameraRef);
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync();
       setPhoto(photo.uri);
-      console.log(photo);
+      // console.log(photo);
 
       // await MediaLibrary.createAssetAsync(uri);
     }
@@ -119,13 +127,13 @@ const CreatePostsScreen = ({ navigation }) => {
     const storageUrlPhoto = await getDownloadURL(
       ref(storage, `postImage/${imageId}`)
     );
-    console.log(storageUrlPhoto);
+    // console.log(storageUrlPhoto);
     return storageUrlPhoto;
   };
 
   const uploadPostToStorage = async () => {
     const photo = await uploadPhotoToStorage();
-    console.log(imageSignature, imageLocation, location.coords, photo);
+    console.log(imageSignature, imageLocation, location, photo);
     try {
       const valueObj = {
         name,
@@ -149,8 +157,8 @@ const CreatePostsScreen = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView styles={styles.box} backGroundColor="#fff">
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.container}>
+        <View style={styles.container}>
+          {isFocused && (
             <Camera
               style={styles.camera}
               type={type}
@@ -184,35 +192,35 @@ const CreatePostsScreen = ({ navigation }) => {
                 </View>
               </TouchableOpacity>
             </Camera>
-            <Pressable onPress={imageDownloaderHandler}>
-              <Text style={styles.text}>Завантажте фото</Text>
-            </Pressable>
+          )}
+          <Pressable onPress={imageDownloaderHandler}>
+            <Text style={styles.text}>Завантажте фото</Text>
+          </Pressable>
 
-            <TextInput
-              value={imageSignature}
-              onChangeText={imageTitleHandler}
-              placeholder="Назва"
-              style={styles.input}
-            />
-            <View position="relative">
-              <Pressable style={styles.mapButton}>
-                <MaterialCommunityIcons
-                  name="map-marker-plus-outline"
-                  size={24}
-                />
-              </Pressable>
-              <TextInput
-                value={imageLocation}
-                onChangeText={imageLocationHandler}
-                placeholder="Місцевість"
-                style={styles.input}
-              ></TextInput>
-            </View>
-            <Pressable onPress={onSubmit} style={styles.button}>
-              <Text style={styles.buttonText}>Опублікувати</Text>
+          <TextInput
+            value={imageSignature}
+            onChangeText={imageTitleHandler}
+            placeholder="Назва"
+            style={styles.input}
+          />
+          <View position="relative">
+            <Pressable style={styles.mapButton}>
+              <MaterialCommunityIcons
+                name="map-marker-plus-outline"
+                size={24}
+              />
             </Pressable>
+            <TextInput
+              value={imageLocation}
+              onChangeText={imageLocationHandler}
+              placeholder="Місцевість"
+              style={styles.input}
+            ></TextInput>
           </View>
-        </TouchableWithoutFeedback>
+          <Pressable onPress={onSubmit} style={styles.button}>
+            <Text style={styles.buttonText}>Опублікувати</Text>
+          </Pressable>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Login from './Screens/LoginScreen';
 import CommentsScreen from './Screens/CommentsScreen';
 import PostItem from './component/PostComponent';
@@ -7,41 +7,42 @@ import Registration from './Screens/RegistrationScreen';
 import Home from './Screens/Home';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getAuth,
   onAuthStateChanged,
   reauthenticateWithCredential,
 } from 'firebase/auth';
 import { refreshUser } from './redux/auth/sliceAuth';
-import { useDispatch } from 'react-redux';
 
 const Stack = createStackNavigator();
 
 export const Route = () => {
   const dispatch = useDispatch();
   const auth = getAuth();
-  onAuthStateChanged(auth, user => {
-    // console.log(user);
-    if (user) {
-      // console.log('User sign in', user, user.displayName);
-      const { displayName, email, uid, accessToken } = user;
-      // console.log(displayName, email, uid, accessToken);
-      dispatch(
-        refreshUser({
-          name: displayName,
-          email: email,
-          id: uid,
-          token: accessToken,
-        })
-      );
-    } else {
-      console.log('User is signed out');
-    }
-  });
+
+  useEffect(() => {
+    onAuthStateChanged(auth, user => {
+      console.log(user);
+      if (user) {
+        const { displayName, email, uid, accessToken } = user;
+        dispatch(
+          refreshUser({
+            name: displayName,
+            email: email,
+            id: uid,
+            token: accessToken,
+          })
+        );
+      } else {
+        console.log('User is signed out');
+      }
+    });
+  }, []);
+
   const isAuth = useSelector(state => state.auth.isAuth);
   console.log(isAuth);
-  if (!isAuth) {
+  if (isAuth === false) {
     return (
       <Stack.Navigator initialRouteName="Реєстрація" style={styles.navBox}>
         <Stack.Screen name="Реєстрація" component={Registration} />

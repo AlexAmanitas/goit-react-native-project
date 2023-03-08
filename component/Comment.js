@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 18,
-    width: 350,
+    width: 250,
     marginLeft: 20,
   },
   time: {

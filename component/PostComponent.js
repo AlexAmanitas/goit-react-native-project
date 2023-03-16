@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    // display: 'box',
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '90%',
@@ -133,9 +132,6 @@ const styles = StyleSheet.create({
   local: {
     marginLeft: 7,
   },
-  // viewBox: {},
-  // viewBox: {},
-  // viewBox: {},
 });
 
 export default PostItem;

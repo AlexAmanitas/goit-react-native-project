@@ -1,4 +1,3 @@
-import { getAuth } from 'firebase/auth';
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
   wrap: {
     width: 300,
     flexWrap: 'wrap',
-    // backgroundColor: 'grey',
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderRadius: 10,
     borderTopLeftRadius: 0,
@@ -57,7 +55,6 @@ const styles = StyleSheet.create({
   myWrap: {
     width: 300,
     flexWrap: 'wrap',
-    // backgroundColor: 'grey',
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderRadius: 10,
     borderTopRightRadius: 0,

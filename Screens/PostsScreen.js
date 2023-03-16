@@ -1,55 +1,21 @@
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  FlatList,
-  SafeAreaView,
-  VirtualizedList,
-} from 'react-native';
-import { selectName, selectEmail, selectID } from '../redux/auth/selectors';
+import { StyleSheet, View, Image, Text, VirtualizedList } from 'react-native';
+import { selectName, selectEmail } from '../redux/auth/selectors';
 import { useSelector } from 'react-redux';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  QuerySnapshot,
-} from 'firebase/firestore';
-import { storage, db } from '../firebase/config';
+import { collection, query } from 'firebase/firestore';
+import { db } from '../firebase/config';
 import PostItem from '../component/PostComponent';
 import { useState, useEffect } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { getAuth, updateProfile } from 'firebase/auth';
+import { onSnapshot } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 const PostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [avatar, setAvatar] = useState(null);
   const name = useSelector(selectName);
   const email = useSelector(selectEmail);
-  // const userId = useSelector(selectID);
   const isAuth = useSelector(state => state.auth.isAuth);
 
   console.log('PostsScreen', isAuth);
-
-  // const getAllPosts = async () => {
-  //   const q = query(collection(db, 'posts'));
-  //   const unsubscribe = onSnapshot(q, querySnapshot => {
-  //     const post = [];
-  //     querySnapshot.forEach(doc =>
-  //       post.push({
-  //         ...doc.data(),
-  //         id: doc.id,
-  //       })
-  //     );
-  //     console.log(post);
-  //     setPosts(post);
-  //   });
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // };
 
   useEffect(() => {
     if (!isAuth) return;
@@ -71,8 +37,6 @@ const PostsScreen = ({ navigation }) => {
       unsubscribe();
     };
   }, []);
-
-  // const uid = getAuth().currentUser.uid;
 
   const getItemCount = () => posts.length;
 
@@ -154,45 +118,3 @@ const styles = StyleSheet.create({
 });
 
 export default PostsScreen;
-
-// <Tab.Navigator
-// style={{ paddingTop: 9, height: 83 }}
-// screenOptions={({ route }) => ({
-//   tabBarShowLabel: false,
-//   tabBarIcon: ({ focused, color, size }) => {
-//     let iconName;
-
-//     if (route.name === 'Публікації') {
-//       iconName = 'view-grid-outline';
-//     } else if (route.name === 'Створити публикацію') {
-//       iconName = 'plus';
-//     } else if (route.name === 'Профіль') {
-//       iconName = 'account-outline';
-//     }
-
-//     return (
-//       <TouchableOpacity
-//         style={{
-//           // marginTop: 9,
-//           // marginBottom: 34,
-//           width: 70,
-//           height: 40,
-//           borderRadius: 20,
-//           backgroundColor: focused ? '#FF6C00' : '#fff',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//         }}
-//       >
-//         <MaterialCommunityIcons name={iconName} color={color} size={24} />
-//       </TouchableOpacity>
-//     );
-//   },
-//   tabBarActiveTintColor: '#fff',
-//   tabBarInactiveTintColor: 'gray',
-//   headerRight: () => (
-//     <Pressable onPress={logOutHandler}>
-//       <MaterialCommunityIcons name="logout" size={24} color="black" />
-//     </Pressable>
-//   ),
-// })}
-// ></Tab.Navigator>

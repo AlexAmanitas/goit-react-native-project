@@ -3,8 +3,6 @@ import {
   StyleSheet,
   View,
   TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
   ImageBackground,
   Platform,
@@ -15,10 +13,9 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { register, setAvatar } from '../redux/auth/authOperations';
+import { useDispatch } from 'react-redux';
+import { register } from '../redux/auth/authOperations';
 import * as ImagePicker from 'expo-image-picker';
-import { selectName, selectAvatar } from '../redux/auth/selectors';
 import { uploadPhotoToStorage } from '../redux/auth/authOperations';
 
 const Registration = ({ navigation }) => {
@@ -34,8 +31,6 @@ const Registration = ({ navigation }) => {
   const emailHandler = text => setEmail(text);
   const passwordHandler = text => setPassword(text);
 
-  // console.log(login, email, password, isAuth);
-
   const onSubmit = () => {
     if (login === '' || email === '' || password === '') {
       return Alert.alert('Заповнить поля');
@@ -46,7 +41,6 @@ const Registration = ({ navigation }) => {
 
   const onTransition = () => {
     navigation.navigate('Логін');
-    // logIn();
   };
 
   const addPhoto = async () => {
@@ -57,17 +51,11 @@ const Registration = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     setAva(result.assets[0].uri);
     setAvatar(await uploadPhotoToStorage(result.assets[0].uri));
   };
 
-  useEffect(() => {
-    // console.log(ava);
-  }, [ava]);
-
-  // console.log(avatar);
+  useEffect(() => {}, [ava]);
 
   return (
     <ImageBackground
@@ -75,7 +63,6 @@ const Registration = ({ navigation }) => {
       style={styles.image}
     >
       <View style={styles.container}>
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
         <View style={styles.avatarWraper}>
           <Image style={styles.avatar} source={{ uri: ava }} />
           <Pressable onPress={addPhoto}>
@@ -121,7 +108,6 @@ const Registration = ({ navigation }) => {
                 <Text style={styles.loginLink}>Увійти</Text>
               </Pressable>
             </View>
-            {/* </TouchableWithoutFeedback> */}
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
@@ -210,32 +196,3 @@ const styles = StyleSheet.create({
 });
 
 export default Registration;
-
-// const auth = getAuth();
-// console.log('auth', auth);
-// createUserWithEmailAndPassword(auth, email, password)
-//   .then(({ user }) => {
-//     console.log(user);
-//     updateProfile(auth.currentUser, { displayName: login }).then(() => {
-//       dispatch(
-//         registerUser({
-//           name: user.displayName,
-//           email: user.email,
-//           id: user.uid,
-//           token: user.accessToken,
-//           isAuth: true,
-//         })
-//       );
-//     });
-//   })
-//   .catch(err => {
-//     console.log(err);
-// if (`${err}`.includes('auth/email-already-in-use')) {
-//   Alert.alert(
-//     'Юзвер з таким ємайлом вже існує))) Заходіть на сторінку логіну'
-//   );
-//   navigation.navigate('Логін');
-//     } else {
-//       console.log('------------------------------');
-//     }
-//   });

@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, TouchableOpacity, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';

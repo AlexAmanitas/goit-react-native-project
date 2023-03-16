@@ -53,16 +53,10 @@ const App = () => {
   );
 };
 
-// https://prnt.sc/vc5s9P2hGpen   debugger screenshot
 export default App;
 const styles = StyleSheet.create({
   container: {
-    // padding: 16,
-    // backgroundColor: 'grey',
-
     flex: 1,
-    // alignItems: 'stretch',
-    // justifyContent: 'flex-end',
   },
 
   navBox: {

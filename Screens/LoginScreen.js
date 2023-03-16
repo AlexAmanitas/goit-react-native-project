@@ -15,9 +15,6 @@ import {
 import { logIn } from '../redux/auth/authOperations';
 import { useDispatch } from 'react-redux';
 
-// papa@mail.com
-// qwerty12345
-
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -48,7 +45,6 @@ const Login = ({ navigation }) => {
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
           >
             <Text style={styles.title}>Увійти</Text>
-            {/* <Text>User Id {userId}</Text> */}
             <TextInput
               value={email}
               onChangeText={emailHandler}
@@ -82,11 +78,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: 'flex-end',
-    // position: 'absolute',
-    // top: 0,
-    // right: 0,
-    // bottom: 0,
-    // left: 0,
   },
 
   container: {
@@ -139,6 +130,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-
-// papa@mail.com
-// qwerty12345

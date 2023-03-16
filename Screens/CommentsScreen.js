@@ -35,8 +35,6 @@ const CommentsScreen = ({ route }) => {
   const [comments, setComments] = useState(null);
   const [commentsCounter, setCommentsCounter] = useState(0);
 
-  // console.log(uid, currentUid);
-
   date.locale(uk);
 
   const createPost = async () => {
@@ -48,7 +46,6 @@ const CommentsScreen = ({ route }) => {
         collection(db, 'posts', id, 'comments'),
         { avatar, text, time, uid: currentUid }
       );
-      // await setDoc(commentDocRef);
     } catch (error) {
       console.log(error.message);
     }
@@ -119,12 +116,10 @@ const CommentsScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'flex-end',
     padding: 16,
   },
 
   image: {
-    // display: 'box',
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '90%',
@@ -134,7 +129,6 @@ const styles = StyleSheet.create({
 
   inputWrap: {
     flexDirection: 'row',
-    // position: 'relative',
     justifyContent: 'center',
     marginTop: 10,
   },

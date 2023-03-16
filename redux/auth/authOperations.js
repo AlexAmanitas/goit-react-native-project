@@ -4,19 +4,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
   updateProfile,
-  updateCurrentUser,
 } from 'firebase/auth';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import uuid from 'react-native-uuid';
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  uploadBytesResumable,
-} from 'firebase/storage';
-import { storage, db } from '../../firebase/config';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../firebase/config';
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -41,7 +34,6 @@ export const register = createAsyncThunk(
         updateUser.email,
         updateUser.uid
       );
-      // dispatch(refreshUpdupdateUser({ name: updateUser.displayName }));
       return {
         name: updateUser.displayName,
         email: updateUser.email,

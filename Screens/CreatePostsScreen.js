@@ -6,10 +6,7 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Platform,
-  Keyboard,
-  SafeAreaView,
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
@@ -17,12 +14,11 @@ import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { storage, db } from '../firebase/config';
 import { v4 } from 'uuid';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { addDoc, collection, doc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { addDoc, collection } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { selectID, selectName } from '../redux/auth/selectors';
 import { useIsFocused } from '@react-navigation/native';
@@ -67,15 +63,6 @@ const CreatePostsScreen = ({ navigation }) => {
     })();
   }, []);
 
-  // useEffect(() => {}, []);
-
-  // if (hasPermission === null) {
-  //   return <View />;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
-
   const imageTitleHandler = text => {
     setImageSignature(text);
   };
@@ -103,13 +90,9 @@ const CreatePostsScreen = ({ navigation }) => {
   };
 
   const takePhoto = async () => {
-    // console.log(cameraRef);
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync();
       setPhoto(photo.uri);
-      // console.log(photo);
-
-      // await MediaLibrary.createAssetAsync(uri);
     }
   };
 
@@ -120,14 +103,12 @@ const CreatePostsScreen = ({ navigation }) => {
     const imageId = v4();
     const storageRef = ref(storage, `postImage/${imageId}`);
 
-    // 'file' comes from the Blob or File API
     await uploadBytes(storageRef, file).then(snapshot => {
       console.log('Uploaded a blob or file!');
     });
     const storageUrlPhoto = await getDownloadURL(
       ref(storage, `postImage/${imageId}`)
     );
-    // console.log(storageUrlPhoto);
     return storageUrlPhoto;
   };
 
@@ -227,17 +208,9 @@ const CreatePostsScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  // box: {
-  //   paddingLeft: 20,
-  //   paddingRight: 20,
-  //   marginLeft: 16,
-  //   marginRight: 16,
-  // },
   container: {
     backGroundColor: '#fff',
     flex: 1,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
     paddingLeft: 20,
     paddingRight: 20,
   },
@@ -297,7 +270,6 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    // display: 'box',
     marginLeft: 'auto',
     marginRight: 'auto',
     width: 343,

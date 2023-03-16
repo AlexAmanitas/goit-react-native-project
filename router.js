@@ -8,11 +8,7 @@ import Home from './Screens/Home';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  getAuth,
-  onAuthStateChanged,
-  reauthenticateWithCredential,
-} from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { refreshUser } from './redux/auth/sliceAuth';
 
 const Stack = createStackNavigator();
@@ -68,10 +64,7 @@ export const Route = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    // backgroundColor: 'grey',
     flex: 1,
-    // alignItems: 'stretch',
-    // justifyContent: 'flex-end',
   },
 
   navBox: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { selectName, selectAvatar, selectID } from '../redux/auth/selectors';
+import { selectName, selectID } from '../redux/auth/selectors';
 import { logOut, setAvatar } from '../redux/auth/authOperations';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -9,30 +9,24 @@ import {
   Image,
   Text,
   FlatList,
-  SafeAreaView,
   ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import PostItem from '../component/PostComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
-import { getAuth, updateProfile } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { collection, query, onSnapshot, where } from 'firebase/firestore';
-import { storage, db } from '../firebase/config';
+import { db } from '../firebase/config';
 
 const ProfileScreen = ({ navigation }) => {
   const auth = getAuth();
-  // const state = useSelector(state => state.auth);
-
   const isAuth = useSelector(state => state.auth.isAuth);
-
   const dispatch = useDispatch();
   const name = useSelector(selectName);
   const id = useSelector(selectID);
   const [posts, setPosts] = useState([]);
   const [image, setImage] = useState();
-
-  console.log('ProfileScreen');
 
   const addPhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -42,7 +36,6 @@ const ProfileScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
     if (!result.canceled) {
       const uri = result.assets[0].uri;
       setImage(uri);
@@ -67,7 +60,6 @@ const ProfileScreen = ({ navigation }) => {
           id: doc.id,
         })
       );
-      console.log(post, name);
       setPosts(post);
     });
     return () => {
